@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OED - 词典查询</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=2">
 </head>
 <body class="index-page">
 
@@ -40,28 +40,23 @@
         <div id="error-popup" class="error-popup hidden fixed top-10 right-10 bg-red-500 text-white p-4 rounded-lg shadow-xl opacity-0">
             <p><strong class="font-bold">检索失败!</strong> 未在词典中找到该单词。</p>
         </div>
-
-        <!-- 友情链接区域 -->
-        <div class="footer-links">
-            <div class="links-container">
-                <h3 class="text-center text-lg font-semibold mb-4 text-white/80">友情链接</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 mb-4">
-                    <!-- 示例链接，可以根据需要添加实际的友情链接 -->
-                    <a href="https://www.ruc.edu.cn" target="_blank" class="link-item">
-                        <div class="link-logo bg-white/10 rounded-lg p-2 w-full flex items-center justify-center" style="height: 64px;">
-                            <span class="text-white text-sm">中国人民大学</span>
-                        </div>
-                    </a>
-                    <!-- 可以继续添加更多链接 -->
-                </div>
-
-                <!-- 版权信息 -->
-                <div class="copyright">
-                    中国人民大学国家治理大数据和人工智能创新平台 版权所有
-                </div>
-            </div>
-        </div>
     </div>
+
+    <!-- 页脚区域 -->
+    <footer class="footer-area">
+        <div class="footer-content">
+            <div class="footer-links-row">
+                <a href="https://www.ruc.edu.cn" target="_blank" class="footer-link">中国人民大学</a>
+                <span class="footer-divider">|</span>
+                <a href="https://brain.ruc.edu.cn" target="_blank" class="footer-link">BRAIN Lab</a>
+                <span class="footer-divider">|</span>
+                <a href="https://oed.com" target="_blank" class="footer-link">Oxford English Dictionary</a>
+            </div>
+            <p class="footer-copyright">
+                © 2024 中国人民大学国家治理大数据和人工智能创新平台
+            </p>
+        </div>
+    </footer>
 
     <!-- 引入Three.js库 -->
     <script type="importmap">

@@ -57,46 +57,50 @@ body.index-page {
     filter: brightness(1.2);
 }
 
-/* 友情链接区域 */
-.footer-links {
-    position: absolute;
+/* 页脚区域 */
+.footer-area {
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 10;
-    background: linear-gradient(to top, rgba(13, 26, 46, 0.95), transparent);
-    padding: 2rem 1rem 1rem;
-}
-
-.links-container {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.link-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    transition: transform 0.3s ease;
-}
-
-.link-item:hover {
-    transform: translateY(-5px);
-}
-
-.link-logo {
-    height: 48px;
-    width: auto;
-    object-fit: contain;
-}
-
-.copyright {
-    text-align: center;
+    z-index: 100;
     padding: 1rem;
+    pointer-events: auto;
+}
+
+.footer-content {
+    text-align: center;
+}
+
+.footer-links-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.footer-link {
+    color: rgba(255, 255, 255, 0.7);
     font-size: 0.875rem;
-    color: rgba(255, 255, 255, 0.6);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: #60a5fa;
+}
+
+.footer-divider {
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.875rem;
+}
+
+.footer-copyright {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.75rem;
+    margin: 0;
 }
 
 /* 词条页面样式 */
