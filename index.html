@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OED - 词典查询</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css?v=3">
 </head>
 <body class="index-page">
 
     <!-- 3D地球的容器 -->
     <div id="globe-container"></div>
+
+    <!-- 发光效果层 -->
+    <div class="glow-overlay"></div>
 
     <!-- 页面内容 -->
     <div class="content-overlay">
@@ -18,24 +21,40 @@
             <img src="assets/images/BRAIN-logo.png" alt="BRAIN Logo" class="brain-logo h-16 md:h-20">
         </header>
 
-        <main class="w-full max-w-2xl text-center">
-            <h2 class="text-4xl md:text-5xl font-light mb-2">
-                <span class="font-bold">OED</span> | Oxford English Dictionary
-            </h2>
-            
-            <!-- 搜索表单 -->
-            <form id="search-form" class="mt-8 w-full">
-                <div class="search-bar flex items-center rounded-lg p-3 w-full shadow-lg">
-                    <span class="text-white/60 px-2">Dictionary</span>
-                    <div class="h-6 w-px bg-white/20 mx-2"></div>
-                    <input type="text" id="search-input" placeholder="输入单词开始检索..." class="flex-grow px-2 text-lg">
-                    <button type="submit" class="p-2 rounded-full hover:bg-white/20 transition-colors">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    </button>
-                </div>
-            </form>
-        </main>
-        
+        <!-- 搜索面板 - 可收起展开 -->
+        <div id="search-panel" class="search-panel collapsed">
+            <!-- 展开按钮 -->
+            <button id="toggle-search" class="toggle-search-btn">
+                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <span class="btn-text">Search Dictionary</span>
+                <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+            </button>
+
+            <!-- 搜索内容区 -->
+            <div class="search-content">
+                <h2 class="text-3xl md:text-4xl font-light mb-6">
+                    <span class="font-bold">OED</span> | Oxford English Dictionary
+                </h2>
+
+                <!-- 搜索表单 -->
+                <form id="search-form" class="w-full max-w-xl mx-auto">
+                    <div class="search-bar flex items-center rounded-lg p-3 w-full shadow-lg">
+                        <span class="text-white/60 px-2">Dictionary</span>
+                        <div class="h-6 w-px bg-white/20 mx-2"></div>
+                        <input type="text" id="search-input" placeholder="输入单词开始检索..." class="flex-grow px-2 text-lg">
+                        <button type="submit" class="p-2 rounded-full hover:bg-white/20 transition-colors">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- 错误提示弹窗 -->
         <div id="error-popup" class="error-popup hidden fixed top-10 right-10 bg-red-500 text-white p-4 rounded-lg shadow-xl opacity-0">
             <p><strong class="font-bold">检索失败!</strong> 未在词典中找到该单词。</p>
