@@ -11,7 +11,7 @@ class BuzzwordDisplay {
         const term = params.get('term');
 
         if (!term) {
-            document.getElementById('headword').textContent = '未找到词条';
+            document.getElementById('headword').textContent = 'Entry Not Found / 未找到词条';
             return;
         }
 
@@ -102,8 +102,8 @@ class BuzzwordDisplay {
             document.getElementById('frequency-source').textContent = `Data: ${data.frequencySource}`;
         }
 
-        // 更新相关词汇
-        this.updateRelatedTerms(data.relatedTerms, data.senses);
+        // 更新相关词汇和索引行
+        this.updateRelatedTerms(data.relatedTerms, data.concordances);
 
         // 创建词频图表
         this.createFrequencyChart(data.frequencyData);
@@ -257,67 +257,52 @@ class BuzzwordDisplay {
         return `${before}<span class="keyword-highlight">${word}</span>${after}`;
     }
 
-    updateRelatedTerms(relatedTerms, senses) {
+    updateRelatedTerms(relatedTerms, concordances) {
         const container = document.getElementById('thesaurus-content');
         container.innerHTML = '';
 
-        if (!relatedTerms || relatedTerms.length === 0) {
-            container.innerHTML = '<p class="loading-text">暂无相关词汇</p>';
+        if ((!relatedTerms || relatedTerms.length === 0) && (!concordances || concordances.length === 0)) {
+            container.innerHTML = '<p class="loading-text">No related terms / 暂无相关词汇</p>';
             return;
         }
 
         // 相关词汇标签
-        const tagsDiv = document.createElement('div');
-        tagsDiv.className = 'related-tags';
+        if (relatedTerms && relatedTerms.length > 0) {
+            const tagsDiv = document.createElement('div');
+            tagsDiv.className = 'related-tags';
 
-        relatedTerms.forEach(term => {
-            const tag = document.createElement('span');
-            tag.className = 'related-tag';
-            tag.textContent = term;
-            tagsDiv.appendChild(tag);
-        });
-
-        container.appendChild(tagsDiv);
-
-        // 语境示例
-        let allExamples = [];
-        senses.forEach(sense => {
-            if (sense.examples) {
-                allExamples = allExamples.concat(sense.examples);
-            }
-            if (sense.subsenses) {
-                sense.subsenses.forEach(subsense => {
-                    if (subsense.examples) {
-                        allExamples = allExamples.concat(subsense.examples);
-                    }
-                });
-            }
-        });
-
-        if (allExamples.length > 0) {
-            const contextTitle = document.createElement('div');
-            contextTitle.className = 'context-title';
-            contextTitle.textContent = '📝 Contextual Examples / 语境示例';
-            container.appendChild(contextTitle);
-
-            allExamples.slice(0, 5).forEach(example => {
-                const contextDiv = document.createElement('div');
-                contextDiv.className = 'example-item';
-
-                const sentence = this.getText(example.sentence, 'en');
-                const leftContext = sentence.substring(0, example.keywordPosition?.start || 0);
-                const word = example.keyword;
-                const rightContext = sentence.substring(example.keywordPosition?.end || sentence.length);
-
-                contextDiv.innerHTML = `
-                    <div class="example-sentence">
-                        ${leftContext}<span class="keyword-highlight">${word}</span>${rightContext}
-                    </div>
-                    <div class="example-year">${example.year} · ${example.source?.title || 'Source'}</div>
-                `;
-
-                container.appendChild(contextDiv);
+            relatedTerms.forEach(term => {
+                const tag = document.createElement('span');
+                tag.className = 'related-tag';
+                tag.textContent = term;
+                tagsDiv.appendChild(tag);
             });
+
+            container.appendChild(tagsDiv);
+        }
+
+        // Concordance 索引行
+        if (concordances && concordances.length > 0) {
+            const concordanceTitle = document.createElement('div');
+            concordanceTitle.className = 'context-title';
+            concordanceTitle.textContent = '📝 Concordance Lines / 索引行';
+            container.appendChild(concordanceTitle);
+
+            const concordanceTable = document.createElement('div');
+            concordanceTable.className = 'concordance-table';
+
+            concordances.forEach(line => {
+                const lineDiv = document.createElement('div');
+                lineDiv.className = 'concordance-line';
+                lineDiv.innerHTML = `
+                    <span class="concordance-left">...${line.left}</span>
+                    <span class="concordance-keyword">${line.keyword}</span>
+                    <span class="concordance-right">${line.right}...</span>
+                `;
+                concordanceTable.appendChild(lineDiv);
+            });
+
+            container.appendChild(concordanceTable);
         }
     }
 
@@ -328,19 +313,24 @@ class BuzzwordDisplay {
 
         if (data.historyFile) {
             this.historyFiles = data.historyFile;
+            this.historyCache = {}; // 缓存已加载的内容
             this.currentHistoryLang = 'zh';
 
             await this.loadHistoryMarkdown('zh');
 
             langZhBtn.addEventListener('click', async () => {
+                if (this.currentHistoryLang === 'zh') return;
                 langZhBtn.classList.add('active');
                 langEnBtn.classList.remove('active');
+                this.currentHistoryLang = 'zh';
                 await this.loadHistoryMarkdown('zh');
             });
 
             langEnBtn.addEventListener('click', async () => {
+                if (this.currentHistoryLang === 'en') return;
                 langEnBtn.classList.add('active');
                 langZhBtn.classList.remove('active');
+                this.currentHistoryLang = 'en';
                 await this.loadHistoryMarkdown('en');
             });
         } else {
@@ -355,22 +345,48 @@ class BuzzwordDisplay {
         const filePath = this.historyFiles[lang];
 
         if (!filePath) {
-            container.innerHTML = '<p class="loading-text">暂无内容</p>';
+            container.innerHTML = '<p class="loading-text">No content / 暂无内容</p>';
+            return;
+        }
+
+        // 如果已缓存，直接使用缓存内容
+        if (this.historyCache && this.historyCache[lang]) {
+            container.style.opacity = '0';
+            setTimeout(() => {
+                container.innerHTML = this.historyCache[lang];
+                container.style.opacity = '1';
+            }, 150);
             return;
         }
 
         try {
-            container.innerHTML = '<p class="loading-text">加载中...</p>';
+            // 首次加载才显示加载中
+            if (!this.historyCache || Object.keys(this.historyCache).length === 0) {
+                container.innerHTML = '<p class="loading-text">Loading... / 加载中...</p>';
+            }
+
             const response = await fetch(filePath);
             if (!response.ok) throw new Error('Failed to load');
             const markdown = await response.text();
 
+            let htmlContent = '';
             if (typeof marked !== 'undefined') {
                 marked.setOptions({
                     breaks: true,
                     gfm: true
                 });
-                container.innerHTML = marked.parse(markdown);
+                htmlContent = marked.parse(markdown);
+            } else {
+                htmlContent = `<pre style="white-space: pre-wrap;">${markdown}</pre>`;
+            }
+
+            // 缓存内容
+            this.historyCache[lang] = htmlContent;
+
+            // 平滑过渡
+            container.style.opacity = '0';
+            setTimeout(() => {
+                container.innerHTML = htmlContent;
 
                 container.querySelectorAll('img').forEach(img => {
                     const src = img.getAttribute('src');
@@ -385,12 +401,12 @@ class BuzzwordDisplay {
                         link.setAttribute('rel', 'noopener noreferrer');
                     }
                 });
-            } else {
-                container.innerHTML = `<pre style="white-space: pre-wrap;">${markdown}</pre>`;
-            }
+
+                container.style.opacity = '1';
+            }, 150);
         } catch (error) {
             console.error('加载历史内容失败:', error);
-            container.innerHTML = '<p class="loading-text" style="color: #ff6b6b;">加载失败，请稍后重试</p>';
+            container.innerHTML = '<p class="loading-text" style="color: #ff6b6b;">Failed to load. Please try again. / 加载失败，请稍后重试</p>';
         }
     }
 
@@ -429,7 +445,7 @@ class BuzzwordDisplay {
     }
 
     show404() {
-        document.getElementById('headword').textContent = '词条未找到';
+        document.getElementById('headword').textContent = 'Entry Not Found / 词条未找到';
         document.getElementById('pronunciation').textContent = '404 Not Found';
 
         document.querySelectorAll('.tab-panel').forEach(tab => {
@@ -440,10 +456,10 @@ class BuzzwordDisplay {
         main.innerHTML = `
             <div class="panel-card" style="text-align: center; padding: 60px 40px;">
                 <div style="font-size: 4rem; margin-bottom: 20px;">🔍</div>
-                <h3 style="font-size: 1.8rem; color: var(--glow-cyan); margin-bottom: 15px;">抱歉，未找到该流行语</h3>
-                <p style="color: var(--meteor-blue-light); margin-bottom: 30px;">请检查输入的词汇是否正确，或返回主页重新搜索。</p>
+                <h3 style="font-size: 1.8rem; color: var(--glow-cyan); margin-bottom: 15px;">Sorry, buzzword not found / 抱歉，未找到该流行语</h3>
+                <p style="color: var(--meteor-blue-light); margin-bottom: 30px;">Please check the term and try again. / 请检查输入的词汇是否正确，或返回主页重新搜索。</p>
                 <a href="index.html" class="back-btn" style="display: inline-flex;">
-                    返回主页
+                    Back to Home / 返回主页
                 </a>
             </div>
         `;
@@ -464,6 +480,32 @@ class BuzzwordDisplay {
                 });
                 document.getElementById(targetTab).classList.add('active');
             });
+        });
+
+        // 设置语义网络说明的语言切换
+        this.setupSemanticLangSwitch();
+    }
+
+    setupSemanticLangSwitch() {
+        const zhBtn = document.getElementById('semantic-lang-zh');
+        const enBtn = document.getElementById('semantic-lang-en');
+        const zhContent = document.getElementById('semantic-content-zh');
+        const enContent = document.getElementById('semantic-content-en');
+
+        if (!zhBtn || !enBtn) return;
+
+        zhBtn.addEventListener('click', () => {
+            zhBtn.classList.add('active');
+            enBtn.classList.remove('active');
+            zhContent.classList.add('active');
+            enContent.classList.remove('active');
+        });
+
+        enBtn.addEventListener('click', () => {
+            enBtn.classList.add('active');
+            zhBtn.classList.remove('active');
+            enContent.classList.add('active');
+            zhContent.classList.remove('active');
         });
     }
 }

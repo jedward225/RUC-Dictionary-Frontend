@@ -694,11 +694,7 @@ class SearchHandler {
     constructor() {
         this.searchForm = document.getElementById('search-form');
         this.searchInput = document.getElementById('search-input');
-        this.errorPopup = document.getElementById('error-popup');
         this.hotWords = document.querySelectorAll('.hot-word');
-
-        this.buzzwords = ["brat", "yyds", "躺平", "内卷"];
-
         this.init();
     }
 
@@ -723,19 +719,8 @@ class SearchHandler {
     }
 
     doSearch(term) {
-        if (this.buzzwords.includes(term.toLowerCase())) {
-            window.location.href = `word.html?term=${encodeURIComponent(term.toLowerCase())}`;
-        } else {
-            this.showErrorPopup();
-        }
-    }
-
-    showErrorPopup() {
-        this.errorPopup.classList.remove('hidden');
-
-        setTimeout(() => {
-            this.errorPopup.classList.add('hidden');
-        }, 3000);
+        // 直接跳转到 word.html，由 word.html 处理 404
+        window.location.href = `word.html?term=${encodeURIComponent(term.toLowerCase())}`;
     }
 }
 

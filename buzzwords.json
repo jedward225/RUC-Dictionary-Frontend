@@ -53,8 +53,8 @@
               },
               "keyword": "brat",
               "keywordPosition": {
-                "start": 5,
-                "end": 9
+                "start": 8,
+                "end": 12
               }
             }
           ],
@@ -90,8 +90,8 @@
                   },
                   "keyword": "brats",
                   "keywordPosition": {
-                    "start": 43,
-                    "end": 48
+                    "start": 46,
+                    "end": 51
                   }
                 },
                 {
@@ -160,8 +160,8 @@
                   },
                   "keyword": "brat",
                   "keywordPosition": {
-                    "start": 49,
-                    "end": 53
+                    "start": 55,
+                    "end": 59
                   }
                 }
               ],
@@ -227,7 +227,23 @@
         "en": "Oxford English Dictionary; Collins Dictionary Word of the Year 2024",
         "zh": "《牛津英语词典》；《柯林斯英语词典》2024年度词汇"
       },
-      "relatedTerms": ["brat summer", "brat green", "brat girl", "Charli XCX", "clean girl"]
+      "relatedTerms": ["brat summer", "brat green", "brat girl", "Charli XCX", "clean girl"],
+      "concordances": [
+        {"left": "It's a", "keyword": "BRAT", "right": "summer... but where did this trend come from and where is it going?"},
+        {"left": "the trend, from the colour focus and products that fit the '", "keyword": "BRAT", "right": "' aesthetic to marketing messages and brand activations"},
+        {"left": "BRAT is a noun (\"that's so BRAT\") and an adjective (\"", "keyword": "BRAT", "right": "summer\"), it's a meme and a movement that has brought people together"},
+        {"left": "their audiences through such simple branding. However,", "keyword": "Brat", "right": "provides a lesson in clarity. Reaching existing and new audiences"},
+        {"left": "fans will always buzz over new album releases, but", "keyword": "Brat", "right": "has taken the internet by storm. With many people growing tired of"},
+        {"left": "Ahead of the album's release date last month, a", "keyword": "brat", "right": "wall was quietly erected overnight in Brooklyn"},
+        {"left": "In modern pop culture, the word", "keyword": "brat", "right": "refers to someone who is confidently rebellious, unapologetic"},
+        {"left": "Given the cultural impact and widespread appeal of", "keyword": "Brat", "right": "Summer, it makes perfect sense for a sneaker brand like"},
+        {"left": "Y2K lip gloss perfectly complements the", "keyword": "brat", "right": "summer vibe with its retro flair and youthful exuberance"},
+        {"left": "even potential presidential candidate Kamala Harris is", "keyword": "brat", "right": ". We have singer Charli XCX to thank for the advent of brat summer"},
+        {"left": "background image to one reminiscent of the famous", "keyword": "Brat", "right": "cover. Gevin Reynolds, a spin doctor who previously worked"},
+        {"left": "here is how you and your brand can be", "keyword": "brat", "right": ": 1. Don't overdo it. Being brat is about being yourself"},
+        {"left": "very little merch, and that's the point,\" Appler says. \"", "keyword": "Brat", "right": "is anti-merch; it embodies fan-made, DIY club outfits"},
+        {"left": "so confusing, sometimes, to be alive—but Brat is here and", "keyword": "Brat", "right": "sees us, a companion while the world spins weirdly on"}
+      ]
     },
     "yyds": {
       "headword": "YYDS",
@@ -297,8 +313,8 @@
               },
               "keyword": "YYDS",
               "keywordPosition": {
-                "start": 6,
-                "end": 10
+                "start": 16,
+                "end": 20
               }
             }
           ],
@@ -374,10 +390,10 @@
                 "title": "Online Forum",
                 "url": ""
               },
-              "keyword": "躺平",
+              "keyword": "lie flat",
               "keywordPosition": {
-                "start": 3,
-                "end": 5
+                "start": 13,
+                "end": 21
               }
             },
             {
@@ -391,10 +407,10 @@
                 "title": "Modern Living Philosophy",
                 "url": ""
               },
-              "keyword": "躺平",
+              "keyword": "Lying flat",
               "keywordPosition": {
                 "start": 0,
-                "end": 2
+                "end": 10
               }
             }
           ],
@@ -470,10 +486,10 @@
                 "title": "Professional Forum",
                 "url": ""
               },
-              "keyword": "内卷",
+              "keyword": "involution",
               "keywordPosition": {
-                "start": 2,
-                "end": 4
+                "start": 10,
+                "end": 20
               }
             },
             {
@@ -487,10 +503,10 @@
                 "title": "Parenting Magazine",
                 "url": ""
               },
-              "keyword": "内卷",
+              "keyword": "involution",
               "keywordPosition": {
-                "start": 2,
-                "end": 4
+                "start": 12,
+                "end": 22
               }
             }
           ],
