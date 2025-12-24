@@ -11,10 +11,10 @@
         "zh": "名词"
       },
       "pronunciation": {
-        "uk": "/brat/",
+        "uk": "/bræt/",
         "us": "/bræt/",
         "audio": {
-          "uk": "assets/audio/brat-uk.mp3",
+          "uk": "assets/audio/brat_uk.mp3",
           "us": "assets/audio/brat-us.mp3"
         }
       },
@@ -207,21 +207,27 @@
         }
       ],
       "frequencyData": [
-        {"year": 2020, "count": 150},
-        {"year": 2021, "count": 300},
-        {"year": 2022, "count": 800},
-        {"year": 2023, "count": 2500},
-        {"year": 2024, "count": 15000}
+        {"year": 2020, "count": 21},
+        {"year": 2021, "count": 18},
+        {"year": 2022, "count": 18},
+        {"year": 2023, "count": 18},
+        {"year": 2024, "count": 30},
+        {"year": 2025, "count": 27}
       ],
+      "frequencySource": "Google Trends (Interest Over Time)",
       "history": {
         "en": "The term 'brat' has undergone a significant semantic shift in 2024. Originally a negative term for a spoiled child, it was reclaimed by pop culture, particularly through Charli XCX's album 'Brat', to represent confidence, authenticity, and unapologetic self-expression. The 'brat summer' phenomenon became a global cultural movement celebrating messy, authentic living.",
         "zh": "\"brat\"一词在2024年经历了显著的语义转变。原本是指被宠坏的孩子的贬义词，在流行文化中被重新定义，特别是通过Charli XCX的专辑《Brat》，代表自信、真实和毫不掩饰的自我表达。\"brat summer\"现象成为全球文化运动，庆祝混乱而真实的生活方式。"
       },
-      "source": {
-        "en": "Global Buzzwords Report 2024",
-        "zh": "《2024年全球流行语报告》"
+      "historyFile": {
+        "en": "assets/history/brat_en.md",
+        "zh": "assets/history/brat_zh.md"
       },
-      "relatedTerms": ["aesthetic", "confidence", "authenticity", "rebellion"]
+      "source": {
+        "en": "Oxford English Dictionary; Collins Dictionary Word of the Year 2024",
+        "zh": "《牛津英语词典》；《柯林斯英语词典》2024年度词汇"
+      },
+      "relatedTerms": ["brat summer", "brat green", "brat girl", "Charli XCX", "clean girl"]
     },
     "yyds": {
       "headword": "YYDS",

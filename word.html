@@ -6,135 +6,211 @@
     <title>流行语词典 - 词条详情</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="css/style.css?v=10">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="min-h-screen p-4">
-    <div class="max-w-6xl mx-auto">
+<body class="word-page">
+    <!-- 简化版背景 -->
+    <canvas id="bg-canvas-simple"></canvas>
+
+    <div class="word-container">
         <!-- 页面头部 -->
-        <header class="mb-8">
-            <div class="flex items-center justify-between">
-                <h1 class="text-4xl font-bold" id="page-title">流行语词典</h1>
-                <a href="index.html" class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-2 px-4 rounded-lg transition-colors">
-                    &larr; 返回主页
+        <header class="word-header">
+            <div class="header-top">
+                <a href="index.html" class="back-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    返回主页
                 </a>
+                <span class="header-brand">Meteor Shower</span>
             </div>
-            <div class="mt-4">
-                <h2 class="text-6xl font-bold capitalize text-cyan-300" id="headword">加载中...</h2>
-                <p class="text-xl text-gray-300 mt-2" id="pronunciation"></p>
+            <div class="header-main">
+                <h1 class="word-title" id="headword">加载中...</h1>
+                <p class="word-pronunciation" id="pronunciation"></p>
             </div>
         </header>
 
         <!-- 标签页导航 -->
-        <nav class="mb-8">
-            <div class="flex flex-wrap gap-2">
-                <button class="tab-button active px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors" data-tab="info">
-                    流行语档案 Info Sheet
-                </button>
-                <button class="tab-button px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors" data-tab="definition">
-                    定义 Definition
-                </button>
-                <button class="tab-button px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors" data-tab="frequency">
-                    词频 Frequency
-                </button>
-                <button class="tab-button px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors" data-tab="history">
-                    演化历史 History
-                </button>
-                <button class="tab-button px-6 py-3 rounded-lg bg-gray-700 hover:bg-gray-600 transition-colors" data-tab="thesaurus">
-                    相关词汇 Thesaurus
-                </button>
-            </div>
+        <nav class="tab-nav">
+            <button class="tab-btn active" data-tab="info">
+                <span class="tab-icon">📋</span>
+                流行语档案
+            </button>
+            <button class="tab-btn" data-tab="definition">
+                <span class="tab-icon">📖</span>
+                定义
+            </button>
+            <button class="tab-btn" data-tab="frequency">
+                <span class="tab-icon">📊</span>
+                词频
+            </button>
+            <button class="tab-btn" data-tab="history">
+                <span class="tab-icon">📜</span>
+                演化历史
+            </button>
+            <button class="tab-btn" data-tab="thesaurus">
+                <span class="tab-icon">🔗</span>
+                相关词汇
+            </button>
         </nav>
 
         <!-- 标签页内容 -->
-        <main class="bg-white/5 p-8 rounded-xl shadow-2xl border border-white/10">
+        <main class="word-main">
             <!-- 流行语档案 -->
-            <div id="info" class="tab-content active">
-                <h3 class="text-2xl font-bold mb-6 text-cyan-400">流行语档案 | Info Sheet</h3>
-                <table class="info-table">
-                    <tr>
-                        <td>Headword | 词目</td>
-                        <td id="info-headword">-</td>
-                    </tr>
-                    <tr>
-                        <td>Language | 来源语言</td>
-                        <td id="info-language">-</td>
-                    </tr>
-                    <tr>
-                        <td>Part of Speech | 词类</td>
-                        <td id="info-pos">-</td>
-                    </tr>
-                    <tr>
-                        <td>Pronunciation | 发音</td>
-                        <td id="info-pronunciation">-</td>
-                    </tr>
-                    <tr>
-                        <td>First Recorded | 首次记录时间</td>
-                        <td id="info-first-recorded">-</td>
-                    </tr>
-                    <tr>
-                        <td>Trending Period | 流行时间</td>
-                        <td id="info-trending">-</td>
-                    </tr>
-                    <tr>
-                        <td>义项数量 Number of Senses</td>
-                        <td id="info-senses">-</td>
-                    </tr>
-                </table>
-            </div>
+            <section id="info" class="tab-panel active">
+                <div class="panel-card">
+                    <h2 class="panel-title">
+                        <span class="title-en">Info Sheet</span>
+                        <span class="title-zh">流行语档案</span>
+                    </h2>
+                    <table class="info-table-new">
+                        <tr>
+                            <td class="info-label">Headword</td>
+                            <td class="info-value" id="info-headword">-</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Language</td>
+                            <td class="info-value" id="info-language">-</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Part of Speech</td>
+                            <td class="info-value" id="info-pos">-</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Pronunciation</td>
+                            <td class="info-value" id="info-pronunciation">-</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">First Recorded</td>
+                            <td class="info-value" id="info-first-recorded">-</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Trending Period</td>
+                            <td class="info-value" id="info-trending">-</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Number of Senses</td>
+                            <td class="info-value" id="info-senses">-</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
 
             <!-- 定义 -->
-            <div id="definition" class="tab-content">
-                <h3 class="text-2xl font-bold mb-6 text-cyan-400">定义 | Definition</h3>
-                <div class="space-y-6">
-                    <div>
-                        <h4 class="text-xl font-semibold text-yellow-400 mb-3">流行义 | Trending Sense</h4>
-                        <p class="text-lg leading-relaxed mb-4" id="trending-sense">-</p>
-
-                        <h5 class="text-lg font-semibold text-green-400 mb-2">Examples 例句</h5>
-                        <ul class="list-disc list-inside space-y-2 pl-4" id="examples-list">
-                        </ul>
-
-                        <h5 class="text-lg font-semibold text-purple-400 mb-2 mt-4">Etymology | 词源</h5>
-                        <p class="text-gray-300 leading-relaxed" id="etymology">-</p>
+            <section id="definition" class="tab-panel">
+                <div class="panel-card">
+                    <h2 class="panel-title">
+                        <span class="title-en">Definition</span>
+                        <span class="title-zh">定义</span>
+                    </h2>
+                    <div id="definition-content">
+                        <!-- 动态内容 -->
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- 词频 -->
-            <div id="frequency" class="tab-content">
-                <h3 class="text-2xl font-bold mb-6 text-cyan-400">词频 | Frequency</h3>
-                <div class="bg-white/10 p-6 rounded-lg">
-                    <canvas id="frequency-chart" width="400" height="200"></canvas>
+            <section id="frequency" class="tab-panel">
+                <div class="panel-card">
+                    <h2 class="panel-title">
+                        <span class="title-en">Frequency</span>
+                        <span class="title-zh">词频趋势</span>
+                    </h2>
+                    <div class="chart-container">
+                        <canvas id="frequency-chart"></canvas>
+                    </div>
+                    <p class="chart-source" id="frequency-source"></p>
                 </div>
-            </div>
+            </section>
 
             <!-- 演化历史 -->
-            <div id="history" class="tab-content">
-                <h3 class="text-2xl font-bold mb-6 text-cyan-400">演化历史 | History</h3>
-                <div class="prose prose-invert max-w-none">
-                    <p class="text-lg leading-relaxed mb-6" id="history-content">-</p>
-                    <div class="mt-6 p-4 bg-blue-900/30 rounded-lg">
-                        <p class="text-sm text-blue-300">
-                            信息来源：<span id="history-source">-</span>
-                        </p>
+            <section id="history" class="tab-panel">
+                <div class="panel-card">
+                    <div class="panel-header-with-actions">
+                        <h2 class="panel-title">
+                            <span class="title-en">History</span>
+                            <span class="title-zh">演化历史</span>
+                        </h2>
+                        <div class="lang-switch">
+                            <button id="lang-zh" class="lang-btn active">中文</button>
+                            <button id="lang-en" class="lang-btn">EN</button>
+                        </div>
+                    </div>
+                    <div id="history-markdown" class="markdown-content">
+                        <p class="loading-text">加载中...</p>
+                    </div>
+                    <div class="source-box">
+                        <span class="source-label">Source:</span>
+                        <span id="history-source">-</span>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <!-- 相关词汇 -->
-            <div id="thesaurus" class="tab-content">
-                <h3 class="text-2xl font-bold mb-6 text-cyan-400">相关词汇 | Thesaurus</h3>
-                <div class="space-y-4" id="thesaurus-content">
-                    <p class="text-gray-400">加载中...</p>
+            <section id="thesaurus" class="tab-panel">
+                <div class="panel-card">
+                    <h2 class="panel-title">
+                        <span class="title-en">Thesaurus</span>
+                        <span class="title-zh">相关词汇</span>
+                    </h2>
+                    <div id="thesaurus-content">
+                        <p class="loading-text">加载中...</p>
+                    </div>
                 </div>
-            </div>
+            </section>
         </main>
     </div>
 
-    <script src="js/word.js"></script>
-    <script src="js/charts.js"></script>
+    <script src="js/word.js?v=3"></script>
+    <script src="js/charts.js?v=4"></script>
     <script>
-        // 扩展 BuzzwordDisplay 类以使用独立的图表功能
+        // 简化版星空背景
+        (function() {
+            const canvas = document.getElementById('bg-canvas-simple');
+            const ctx = canvas.getContext('2d');
+            let stars = [];
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                createStars();
+            }
+
+            function createStars() {
+                const count = Math.floor((canvas.width * canvas.height) / 15000);
+                stars = [];
+                for (let i = 0; i < count; i++) {
+                    stars.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height,
+                        r: Math.random() * 1.2 + 0.3,
+                        a: Math.random() * 0.5 + 0.2,
+                        twinkle: Math.random() * 0.02
+                    });
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                stars.forEach(star => {
+                    star.a += star.twinkle;
+                    if (star.a > 0.7 || star.a < 0.2) star.twinkle *= -1;
+                    ctx.beginPath();
+                    ctx.arc(star.x, star.y, star.r, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(147, 181, 207, ${star.a})`;
+                    ctx.fill();
+                });
+                requestAnimationFrame(animate);
+            }
+
+            resize();
+            animate();
+            window.addEventListener('resize', resize);
+        })();
+
+        // 扩展 BuzzwordDisplay 类
         BuzzwordDisplay.prototype.createFrequencyChart = function(frequencyData) {
             if (typeof window.createFrequencyChart === 'function') {
                 window.createFrequencyChart(frequencyData);

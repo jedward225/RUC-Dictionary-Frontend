@@ -1,6 +1,23 @@
 class FrequencyChart {
     constructor() {
         this.chart = null;
+        // 流星雨色系
+        this.colors = {
+            glowCyan: '#00d4ff',
+            meteorPurpleDeep: '#8A4B9C',
+            meteorPurpleSoft: '#C08EAF',
+            meteorBlueLight: '#93B5CF',
+            niloBlue: '#2474B5',
+            starYellow: '#FBDA41'
+        };
+    }
+
+    createGradient(ctx, chartArea) {
+        const gradient = ctx.createLinearGradient(0, chartArea.bottom, 0, chartArea.top);
+        gradient.addColorStop(0, 'rgba(0, 212, 255, 0.05)');
+        gradient.addColorStop(0.5, 'rgba(36, 116, 181, 0.15)');
+        gradient.addColorStop(1, 'rgba(138, 75, 156, 0.25)');
+        return gradient;
     }
 
     create(frequencyData) {
@@ -13,23 +30,41 @@ class FrequencyChart {
         const years = frequencyData.map(item => item.year);
         const counts = frequencyData.map(item => item.count);
 
+        // 创建发光线条渐变
+        const lineGradient = ctx.createLinearGradient(0, 0, ctx.canvas.width, 0);
+        lineGradient.addColorStop(0, this.colors.glowCyan);
+        lineGradient.addColorStop(0.5, this.colors.meteorBlueLight);
+        lineGradient.addColorStop(1, this.colors.meteorPurpleSoft);
+
+        const self = this;
+
         this.chart = new Chart(ctx, {
             type: 'line',
             data: {
                 labels: years,
                 datasets: [{
-                    label: '使用频次',
+                    label: '使用频次 / Frequency',
                     data: counts,
-                    borderColor: '#60a5fa',
-                    backgroundColor: 'rgba(96, 165, 250, 0.1)',
+                    borderColor: lineGradient,
+                    backgroundColor: function(context) {
+                        const chart = context.chart;
+                        const { ctx, chartArea } = chart;
+                        if (!chartArea) {
+                            return 'rgba(0, 212, 255, 0.1)';
+                        }
+                        return self.createGradient(ctx, chartArea);
+                    },
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4,
-                    pointBackgroundColor: '#60a5fa',
-                    pointBorderColor: '#ffffff',
-                    pointBorderWidth: 2,
+                    pointBackgroundColor: this.colors.glowCyan,
+                    pointBorderColor: 'rgba(0, 212, 255, 0.5)',
+                    pointBorderWidth: 3,
                     pointRadius: 6,
-                    pointHoverRadius: 8
+                    pointHoverRadius: 10,
+                    pointHoverBackgroundColor: this.colors.starYellow,
+                    pointHoverBorderColor: 'rgba(251, 218, 65, 0.5)',
+                    pointHoverBorderWidth: 4
                 }]
             },
             options: {
@@ -38,19 +73,35 @@ class FrequencyChart {
                 plugins: {
                     legend: {
                         labels: {
-                            color: '#ffffff',
+                            color: this.colors.meteorBlueLight,
                             font: {
-                                size: 14
-                            }
+                                size: 14,
+                                family: 'Inter, sans-serif'
+                            },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
                         }
                     },
                     tooltip: {
-                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                        titleColor: '#ffffff',
+                        backgroundColor: 'rgba(0, 20, 50, 0.9)',
+                        titleColor: this.colors.glowCyan,
                         bodyColor: '#ffffff',
-                        borderColor: '#60a5fa',
+                        borderColor: 'rgba(0, 212, 255, 0.3)',
                         borderWidth: 1,
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: false,
+                        titleFont: {
+                            size: 14,
+                            weight: 'bold'
+                        },
+                        bodyFont: {
+                            size: 13
+                        },
                         callbacks: {
+                            title: function(context) {
+                                return `${context[0].label} 年`;
+                            },
                             label: function(context) {
                                 return `使用频次: ${context.parsed.y.toLocaleString()}`;
                             }
@@ -61,42 +112,54 @@ class FrequencyChart {
                     x: {
                         title: {
                             display: true,
-                            text: '年份',
-                            color: '#ffffff',
+                            text: '年份 / Year',
+                            color: this.colors.meteorBlueLight,
                             font: {
-                                size: 14
+                                size: 13,
+                                family: 'Inter, sans-serif'
                             }
                         },
                         ticks: {
-                            color: '#ffffff',
+                            color: this.colors.meteorBlueLight,
                             font: {
-                                size: 12
+                                size: 12,
+                                family: 'Inter, sans-serif'
                             }
                         },
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
+                            color: 'rgba(0, 212, 255, 0.08)',
+                            lineWidth: 1
+                        },
+                        border: {
+                            color: 'rgba(0, 212, 255, 0.2)'
                         }
                     },
                     y: {
                         title: {
                             display: true,
-                            text: '使用频次',
-                            color: '#ffffff',
+                            text: '使用频次 / Frequency',
+                            color: this.colors.meteorBlueLight,
                             font: {
-                                size: 14
+                                size: 13,
+                                family: 'Inter, sans-serif'
                             }
                         },
                         ticks: {
-                            color: '#ffffff',
+                            color: this.colors.meteorBlueLight,
                             font: {
-                                size: 12
+                                size: 12,
+                                family: 'Inter, sans-serif'
                             },
                             callback: function(value) {
                                 return value.toLocaleString();
                             }
                         },
                         grid: {
-                            color: 'rgba(255, 255, 255, 0.1)'
+                            color: 'rgba(0, 212, 255, 0.08)',
+                            lineWidth: 1
+                        },
+                        border: {
+                            color: 'rgba(0, 212, 255, 0.2)'
                         }
                     }
                 },
@@ -111,6 +174,11 @@ class FrequencyChart {
                         from: 1,
                         to: 0.4,
                         loop: false
+                    },
+                    y: {
+                        duration: 1500,
+                        easing: 'easeOutElastic',
+                        from: (ctx) => ctx.chart.scales.y.getPixelForValue(0)
                     }
                 }
             }

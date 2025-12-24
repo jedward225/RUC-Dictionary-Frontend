@@ -1,6 +1,6 @@
 # RUC-Buzzword-Dictionary
 
-这是一个流行语词典网页，功能是效仿牛津词典做一个展示网页，深蓝色调。requirements.md有一些简单的会议记录。网页主要由两部分组成——①检索主页；②单词定义页面。其中，单词定义页面分为5个可以点击切换的栏目—— "流行语档案 Info Sheet", "定义 Definition", "词频 Frequency", "演化历史界面样例 History", "相关词汇界面样例 Thesaurus"
+这是一个中国人民大学外国语学院的流行语词典前端网页项目仓库，功能是效仿牛津词典做一个展示网页，深蓝色调。requirements.md有一些简单的会议记录。网页主要由两部分组成——①检索主页；②单词定义页面。其中，单词定义页面分为5个可以点击切换的栏目—— "流行语档案 Info Sheet", "定义 Definition", "词频 Frequency", "演化历史界面样例 History", "相关词汇界面样例 Thesaurus"
 
 ## 效果预览
 

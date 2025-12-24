@@ -3,79 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OED - 词典查询</title>
+    <title>Meteor Shower - 流行语词典</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=11">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body class="index-page">
 
-    <!-- 3D地球的容器 -->
-    <div id="globe-container"></div>
+    <!-- 主容器：左右分栏 -->
+    <div class="main-container">
+        <!-- 左侧：3D地球区域 -->
+        <div class="globe-section">
+            <div id="globe-container"></div>
+            <div class="glow-overlay"></div>
+        </div>
 
-    <!-- 发光效果层 -->
-    <div class="glow-overlay"></div>
+        <!-- 右侧：搜索区域 -->
+        <div class="search-section">
+            <header class="search-header">
+                <img src="assets/images/BRAIN-logo.png" alt="BRAIN Logo" class="brain-logo">
+            </header>
 
-    <!-- 页面内容 -->
-    <div class="content-overlay">
-        <header class="absolute top-6 left-6 z-10">
-            <img src="assets/images/BRAIN-logo.png" alt="BRAIN Logo" class="brain-logo h-16 md:h-20">
-        </header>
-
-        <!-- 搜索面板 - 可收起展开 -->
-        <div id="search-panel" class="search-panel collapsed">
-            <!-- 展开按钮 -->
-            <button id="toggle-search" class="toggle-search-btn">
-                <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <span class="btn-text">Search Dictionary</span>
-                <svg class="chevron-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="6 9 12 15 18 9"></polyline>
-                </svg>
-            </button>
-
-            <!-- 搜索内容区 -->
-            <div class="search-content">
-                <h2 class="text-3xl md:text-4xl font-light mb-6">
-                    <span class="font-bold">OED</span> | Oxford English Dictionary
-                </h2>
+            <div class="search-main">
+                <h1 class="site-title">
+                    <span class="gradient-text">Meteor Shower</span>
+                    <span class="title-divider">|</span>
+                    <span class="title-sub">流行语词典</span>
+                </h1>
+                <p class="site-desc">Global Slang & Buzzword Dictionary</p>
 
                 <!-- 搜索表单 -->
-                <form id="search-form" class="w-full max-w-xl mx-auto">
-                    <div class="search-bar flex items-center rounded-lg p-3 w-full shadow-lg">
-                        <span class="text-white/60 px-2">Dictionary</span>
-                        <div class="h-6 w-px bg-white/20 mx-2"></div>
-                        <input type="text" id="search-input" placeholder="输入单词开始检索..." class="flex-grow px-2 text-lg">
-                        <button type="submit" class="p-2 rounded-full hover:bg-white/20 transition-colors">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <form id="search-form" class="search-form">
+                    <div class="search-bar">
+                        <span class="search-label">Dictionary</span>
+                        <div class="search-divider"></div>
+                        <input type="text" id="search-input" placeholder="输入单词开始检索..." class="search-input">
+                        <button type="submit" class="search-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
                         </button>
                     </div>
                 </form>
-            </div>
-        </div>
 
-        <!-- 错误提示弹窗 -->
-        <div id="error-popup" class="error-popup hidden fixed top-10 right-10 bg-red-500 text-white p-4 rounded-lg shadow-xl opacity-0">
-            <p><strong class="font-bold">检索失败!</strong> 未在词典中找到该单词。</p>
+                <!-- 热门词汇提示 -->
+                <div class="hot-words">
+                    <span class="hot-label">Try:</span>
+                    <button type="button" class="hot-word" data-word="brat">brat</button>
+                    <button type="button" class="hot-word" data-word="yyds">YYDS</button>
+                    <button type="button" class="hot-word" data-word="躺平">躺平</button>
+                    <button type="button" class="hot-word" data-word="内卷">内卷</button>
+                </div>
+            </div>
+
+            <!-- 页脚 -->
+            <footer class="search-footer">
+                <!-- 词典链接 -->
+                <div class="footer-links dictionaries">
+                    <a href="https://www.oed.com" target="_blank">Oxford Dictionary</a>
+                    <a href="https://www.larousse.fr" target="_blank">Larousse</a>
+                    <a href="https://www.collinsdictionary.com" target="_blank">Collins</a>
+                    <a href="https://www.zdic.net" target="_blank">现代汉语词典</a>
+                    <a href="https://www.dwds.de" target="_blank">DWDS</a>
+                    <a href="https://www.merriam-webster.com" target="_blank">Merriam-Webster</a>
+                    <a href="https://slovarozhegova.ru" target="_blank">Ожегов</a>
+                    <a href="https://dle.rae.es" target="_blank">RAE</a>
+                    <a href="https://dictionnaire.lerobert.com" target="_blank">Le Robert</a>
+                    <a href="https://www.duden.de" target="_blank">Duden</a>
+                </div>
+                <!-- 机构链接 -->
+                <div class="footer-links institutions">
+                    <a href="https://www.ruc.edu.cn" target="_blank">中国人民大学</a>
+                    <a href="http://fl.ruc.edu.cn" target="_blank">外国语学院</a>
+                    <a href="https://brain.ruc.edu.cn" target="_blank">BRAIN Lab</a>
+                </div>
+                <p class="copyright">© 2025 中国人民大学国家治理大数据和人工智能创新平台</p>
+            </footer>
         </div>
     </div>
 
-    <!-- 页脚区域 -->
-    <footer class="footer-area">
-        <div class="footer-content">
-            <div class="footer-links-row">
-                <a href="https://www.ruc.edu.cn" target="_blank" class="footer-link">中国人民大学</a>
-                <span class="footer-divider">|</span>
-                <a href="https://brain.ruc.edu.cn" target="_blank" class="footer-link">BRAIN Lab</a>
-                <span class="footer-divider">|</span>
-                <a href="https://oed.com" target="_blank" class="footer-link">Oxford English Dictionary</a>
-            </div>
-            <p class="footer-copyright">
-                © 2024 中国人民大学国家治理大数据和人工智能创新平台
-            </p>
-        </div>
-    </footer>
+    <!-- 错误提示弹窗 -->
+    <div id="error-popup" class="error-popup hidden">
+        <p><strong>检索失败!</strong> 未在词典中找到该单词。</p>
+    </div>
 
     <!-- 引入Three.js库 -->
     <script type="importmap">
@@ -86,7 +97,7 @@
             }
         }
     </script>
-    <script type="module" src="js/main.js"></script>
+    <script type="module" src="js/main.js?v=3"></script>
 
 </body>
 </html>
