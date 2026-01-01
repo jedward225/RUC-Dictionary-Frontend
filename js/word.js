@@ -295,9 +295,9 @@ class BuzzwordDisplay {
                 const lineDiv = document.createElement('div');
                 lineDiv.className = 'concordance-line';
                 lineDiv.innerHTML = `
-                    <span class="concordance-left">...${line.left}</span>
+                    <span class="concordance-left">${line.left}</span>
                     <span class="concordance-keyword">${line.keyword}</span>
-                    <span class="concordance-right">${line.right}...</span>
+                    <span class="concordance-right">${line.right}</span>
                 `;
                 concordanceTable.appendChild(lineDiv);
             });

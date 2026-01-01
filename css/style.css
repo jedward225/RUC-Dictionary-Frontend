@@ -440,27 +440,29 @@ body.index-page {
     font-size: 1.125rem;
 }
 
-/* Markdown 内容样式 */
+/* Markdown 内容样式 - 青蓝科幻风 */
 .markdown-content {
     line-height: 1.8;
-    color: var(--meteor-purple-light);
+    color: rgba(255, 255, 255, 0.9);
     transition: opacity 0.15s ease;
 }
 
 .markdown-content h1 {
     font-size: 2rem;
     font-weight: bold;
-    color: var(--meteor-yellow-bright);
+    color: var(--glow-cyan);
     margin: 1.5rem 0 1rem;
     padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(192, 142, 175, 0.2);
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
 }
 
 .markdown-content h2 {
     font-size: 1.5rem;
     font-weight: bold;
-    color: var(--meteor-yellow-soft);
+    color: #ffffff;
     margin: 1.5rem 0 1rem;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
 }
 
 .markdown-content h3 {
@@ -475,13 +477,15 @@ body.index-page {
 }
 
 .markdown-content a {
-    color: var(--meteor-blue-light);
+    color: var(--glow-cyan);
     text-decoration: underline;
     text-underline-offset: 2px;
+    transition: all 0.2s ease;
 }
 
 .markdown-content a:hover {
-    color: var(--meteor-yellow-bright);
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
 }
 
 .markdown-content ul, .markdown-content ol {
@@ -496,8 +500,8 @@ body.index-page {
 .markdown-content blockquote {
     margin: 1rem 0;
     padding: 1rem 1.25rem;
-    background: rgba(138, 75, 156, 0.15);
-    border-left: 4px solid var(--meteor-purple-deep);
+    background: rgba(0, 212, 255, 0.08);
+    border-left: 4px solid var(--glow-cyan);
     border-radius: 0 8px 8px 0;
 }
 
@@ -514,18 +518,18 @@ body.index-page {
 
 .markdown-content th, .markdown-content td {
     padding: 0.5rem 0.75rem;
-    border: 1px solid rgba(192, 142, 175, 0.2);
+    border: 1px solid rgba(0, 212, 255, 0.15);
     text-align: left;
 }
 
 .markdown-content th {
-    background: rgba(138, 75, 156, 0.2);
+    background: rgba(0, 212, 255, 0.15);
     font-weight: 600;
-    color: var(--meteor-yellow-soft);
+    color: var(--glow-cyan);
 }
 
 .markdown-content tr:nth-child(even) {
-    background: rgba(45, 65, 155, 0.1);
+    background: rgba(0, 50, 100, 0.2);
 }
 
 .markdown-content img {
@@ -539,27 +543,27 @@ body.index-page {
 
 .markdown-content em {
     font-style: italic;
-    color: var(--meteor-purple-soft);
+    color: var(--meteor-blue-light);
 }
 
 .markdown-content strong {
     font-weight: bold;
-    color: var(--meteor-yellow-white);
+    color: #ffffff;
 }
 
 .markdown-content code {
-    background: rgba(138, 75, 156, 0.2);
+    background: rgba(0, 212, 255, 0.15);
     padding: 0.125rem 0.375rem;
     border-radius: 4px;
     font-family: monospace;
     font-size: 0.9em;
-    color: var(--meteor-yellow-soft);
+    color: var(--glow-cyan);
 }
 
 .markdown-content hr {
     margin: 2rem 0;
     border: none;
-    border-top: 1px solid rgba(192, 142, 175, 0.2);
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
 }
 
 /* 注脚样式 */
@@ -569,7 +573,7 @@ body.index-page {
 }
 
 .markdown-content sup a {
-    color: var(--meteor-yellow-bright);
+    color: var(--glow-cyan);
     text-decoration: none;
 }
 
@@ -579,7 +583,7 @@ body.index-page {
     display: block;
     text-align: center;
     font-size: 0.875rem;
-    color: var(--meteor-purple-soft);
+    color: var(--meteor-blue-light);
     margin-top: -0.5rem;
 }
 
@@ -1063,19 +1067,19 @@ body.word-page {
 .source-box {
     margin-top: 25px;
     padding: 15px 20px;
-    background: rgba(138, 75, 156, 0.1);
-    border: 1px solid rgba(138, 75, 156, 0.2);
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.15);
     border-radius: 10px;
 }
 
 .source-label {
-    color: var(--meteor-purple-soft);
+    color: var(--glow-cyan);
     font-weight: 600;
     margin-right: 10px;
 }
 
 #history-source {
-    color: var(--meteor-blue-light);
+    color: rgba(255, 255, 255, 0.8);
 }
 
 /* 加载文本 */
@@ -1230,14 +1234,14 @@ body.word-page {
 .etymology-box {
     margin-top: 20px;
     padding: 20px;
-    background: rgba(138, 75, 156, 0.1);
-    border: 1px solid rgba(138, 75, 156, 0.2);
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.15);
     border-radius: 12px;
 }
 
 .etymology-title {
     font-size: 1rem;
-    color: var(--meteor-purple-soft);
+    color: var(--glow-cyan);
     font-weight: 600;
     margin-bottom: 12px;
     display: flex;
@@ -1281,56 +1285,76 @@ body.word-page {
     border-top: 1px solid rgba(0, 212, 255, 0.1);
 }
 
-/* Concordance 索引行样式 */
+/* Concordance 索引行样式 - KWIC格式 */
 .concordance-table {
     font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
     font-size: 0.85rem;
-    line-height: 1.8;
+    line-height: 1;
     background: rgba(0, 20, 50, 0.4);
     border-radius: 10px;
     padding: 20px;
     overflow-x: auto;
+    display: table;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 .concordance-line {
-    display: flex;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid rgba(0, 212, 255, 0.08);
-    white-space: nowrap;
+    display: table-row;
 }
 
-.concordance-line:last-child {
+.concordance-line:hover .concordance-left,
+.concordance-line:hover .concordance-right {
+    color: #ffffff;
+}
+
+.concordance-left,
+.concordance-keyword,
+.concordance-right {
+    display: table-cell;
+    padding: 10px 0;
+    vertical-align: middle;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+}
+
+.concordance-line:last-child .concordance-left,
+.concordance-line:last-child .concordance-keyword,
+.concordance-line:last-child .concordance-right {
     border-bottom: none;
 }
 
 .concordance-left {
-    flex: 1;
+    width: 45%;
     text-align: right;
-    color: var(--meteor-purple-light);
-    padding-right: 8px;
+    color: rgba(255, 255, 255, 0.75);
+    padding-right: 12px;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 0;
 }
 
 .concordance-keyword {
-    flex-shrink: 0;
-    padding: 4px 12px;
+    width: auto;
+    white-space: nowrap;
+    padding: 6px 14px;
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.3), rgba(138, 75, 156, 0.3));
     border-radius: 4px;
     color: #ffffff;
     font-weight: 600;
-    text-transform: uppercase;
+    text-align: center;
     box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
 }
 
 .concordance-right {
-    flex: 1;
+    width: 45%;
     text-align: left;
-    color: var(--meteor-purple-light);
-    padding-left: 8px;
+    color: rgba(255, 255, 255, 0.75);
+    padding-left: 12px;
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 0;
 }
 
 /* 音频按钮 */
