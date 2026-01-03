@@ -7,10 +7,11 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <link rel="stylesheet" href="css/style.css?v=18">
+    <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+    <link rel="stylesheet" href="css/style.css?v=40">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="word-page">
+<body class="word-page" data-scheme="b">
     <!-- 简化版背景 -->
     <canvas id="bg-canvas-simple"></canvas>
 
@@ -24,7 +25,6 @@
                     </svg>
                     Back / 返回
                 </a>
-                <span class="header-brand">Meteor Shower</span>
             </div>
             <div class="header-main">
                 <h1 class="word-title" id="headword">加载中...</h1>
@@ -58,10 +58,10 @@
                     <span class="tab-zh">演化历史</span>
                 </span>
             </button>
-            <button class="tab-btn" data-tab="thesaurus">
+            <button class="tab-btn" data-tab="concordance">
                 <span class="tab-text">
-                    <span class="tab-en">Thesaurus</span>
-                    <span class="tab-zh">相关词汇</span>
+                    <span class="tab-en">Concordance</span>
+                    <span class="tab-zh">索引行</span>
                 </span>
             </button>
             <button class="tab-btn" data-tab="semantic-network">
@@ -109,6 +109,10 @@
                         <tr>
                             <td class="info-label">Number of Senses</td>
                             <td class="info-value" id="info-senses">-</td>
+                        </tr>
+                        <tr>
+                            <td class="info-label">Related Work</td>
+                            <td class="info-value" id="info-related-work">-</td>
                         </tr>
                     </table>
                 </div>
@@ -164,146 +168,72 @@
                 </div>
             </section>
 
-            <!-- 相关词汇 -->
-            <section id="thesaurus" class="tab-panel">
+            <!-- 索引行 -->
+            <section id="concordance" class="tab-panel">
                 <div class="panel-card">
                     <h2 class="panel-title">
-                        <span class="title-en">Thesaurus</span>
-                        <span class="title-zh">相关词汇</span>
+                        <span class="title-en">Concordance</span>
+                        <span class="title-zh">索引行</span>
                     </h2>
-                    <div id="thesaurus-content">
+                    <div id="concordance-content">
                         <p class="loading-text">Loading... / 加载中...</p>
                     </div>
                 </div>
             </section>
 
-            <!-- 语义网络说明 -->
+            <!-- 语义网络 -->
             <section id="semantic-network" class="tab-panel">
                 <div class="panel-card">
-                    <div class="panel-header-with-actions">
+                    <div class="panel-title-with-help">
                         <h2 class="panel-title">
                             <span class="title-en">Semantic Network</span>
-                            <span class="title-zh">语义网络说明</span>
+                            <span class="title-zh">语义网络</span>
                         </h2>
-                        <div class="lang-switch">
-                            <button id="semantic-lang-zh" class="lang-btn active">中文</button>
-                            <button id="semantic-lang-en" class="lang-btn">EN</button>
+                        <!-- 帮助按钮 -->
+                        <div class="help-tooltip-container">
+                            <button class="help-btn" id="semantic-help-btn" aria-label="说明">?</button>
+                            <div class="help-tooltip" id="semantic-help-tooltip">
+                                <div class="help-tooltip-header">
+                                    <span class="help-tooltip-title">语义网络说明 / About</span>
+                                    <div class="help-lang-switch">
+                                        <button class="help-lang-btn active" data-lang="zh">中文</button>
+                                        <button class="help-lang-btn" data-lang="en">EN</button>
+                                    </div>
+                                </div>
+                                <div class="help-tooltip-content" id="help-content-zh">
+                                    <p><strong>原理：</strong>基于分布语义思想，通过分析流行语在真实语料中的共现模式，展示其搭配结构与语义邻域。</p>
+                                    <p><strong>节点：</strong>目标词及其高频搭配词</p>
+                                    <p><strong>节点大小：</strong>与词频成正比</p>
+                                    <p><strong>节点颜色：</strong>表示词类（名词、动词、形容词等）</p>
+                                    <p><strong>连线：</strong>连接目标词与搭配词</p>
+                                    <p><strong>距离：</strong>反映使用分布的相似程度</p>
+                                    <p><strong>数据来源：</strong>全球流行语语料库（2024）</p>
+                                </div>
+                                <div class="help-tooltip-content" id="help-content-en" style="display: none;">
+                                    <p><strong>Principle:</strong> Based on distributional semantics, analyzing co-occurrence patterns to visualize collocational structure and semantic neighborhood.</p>
+                                    <p><strong>Nodes:</strong> Target word and high-frequency collocates</p>
+                                    <p><strong>Node size:</strong> Proportional to frequency</p>
+                                    <p><strong>Node color:</strong> Part of speech (noun, verb, adj, etc.)</p>
+                                    <p><strong>Edges:</strong> Connect target word with collocates</p>
+                                    <p><strong>Distance:</strong> Reflects distributional similarity</p>
+                                    <p><strong>Data source:</strong> Global Trending Words Corpus (2024)</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 中文内容 -->
-                    <div id="semantic-content-zh" class="semantic-content active">
-                        <p class="semantic-intro">本语义网络图基于分布语义思想，通过分析流行语在真实语料中的共现模式，展示其搭配结构与语义邻域。图中节点之间的空间关系反映词项在使用环境上的相似程度，而非语法依存关系或规范性义项划分。</p>
-
-                        <div class="semantic-section">
-                            <h3>1. 共现统计与窗口设置</h3>
-                            <p>以目标词为中心，在语料中统计其上下文共现词。系统采用对称窗口方法：当目标词出现时，向前和向后各取5个词作为上下文范围（窗口大小 <em>k</em> = 5），仅保留名词、动词、形容词和副词等内容词。根据共现频率，对所有候选词进行排序，选取出现频率最高的一组搭配词，作为语义网络图中的节点。</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>2. 语义表示构建</h3>
-                            <p>对每一个节点词，统计其在语料中出现时的上下文词分布，并将这些上下文信息编码为向量表示。每个向量刻画的是该词在不同使用环境中的分布特征，而非词义本身。</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>3. 相似度与距离计算</h3>
-                            <p>系统使用余弦相似度衡量不同节点词之间的分布相似性，并将相似度转换为距离值。相似度越高，表示两个词在语料中的使用环境越接近；相应地，在语义网络图中的空间距离也越近。</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>4. 二维空间映射</h3>
-                            <p>为便于可视化展示，采用多维尺度分析（MDS）方法，将高维语义距离关系映射到二维平面中。在该过程中，系统尽可能保留原始距离结构，使语义相近的词在图中位置上更为接近。</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>5. 可视化呈现规则</h3>
-                            <p>在语义网络图中，各视觉元素的含义如下：</p>
-                            <ul class="semantic-list">
-                                <li><strong>节点：</strong>表示目标词及其高频搭配词；</li>
-                                <li><strong>节点大小：</strong>与该词在语料中的相对出现频率成正比；</li>
-                                <li><strong>节点颜色：</strong>表示该词最常见的词类；</li>
-                                <li><strong>连线：</strong>连接目标词与各搭配词，表示其结构性关联；</li>
-                                <li><strong>节点间距离：</strong>反映词项在使用分布上的相似程度，而非语义强弱或评价取向。</li>
-                            </ul>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>6. 语料来源</h3>
-                            <p>语义网络图所使用的数据来源于项目自建的全球流行语语料库（2024）。语料通过采网络公开文本采集获得，涵盖流行语在社交媒体、网络讨论及媒体报道等真实使用场景中的自然语言材料。所有计算均基于真实用例，而非词典释义或人工构造文本。</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>7. 软件与工具</h3>
-                            <p>语义网络图的构建基于开源自然语言处理与数据分析工具完成，主要包括：</p>
-                            <ul class="semantic-list">
-                                <li><strong>spaCy：</strong>用于英文文本的分词、词性标注与词形还原；</li>
-                                <li><strong>scikit-learn：</strong>用于余弦相似度计算及多维尺度分析（MDS）；</li>
-                                <li><strong>NumPy：</strong>用于向量与矩阵运算；</li>
-                                <li><strong>Matplotlib：</strong>用于语义网络图的可视化绘制。</li>
-                            </ul>
-                            <p>所有分析流程均在 Python 环境中完成，<a href="#" target="_blank">点击这里可获取代码</a>。</p>
-                        </div>
-                    </div>
-
-                    <!-- English Content -->
-                    <div id="semantic-content-en" class="semantic-content">
-                        <p class="semantic-intro">This semantic network is grounded in the principles of distributional semantics. By analyzing co-occurrence patterns of a trending word in authentic corpus data, it visualizes its collocational structure and semantic neighborhood. The spatial relationships between nodes represent similarities in usage contexts, rather than syntactic dependency relations or prescriptive sense distinctions.</p>
-
-                        <div class="semantic-section">
-                            <h3>1. Co-occurrence Statistics and Window Settings</h3>
-                            <p>Taking the target word as the center, the system extracts its contextual co-occurring words from the corpus. A symmetric window approach is adopted: whenever the target word occurs, five words to the left and five words to the right are taken as its context (window size <em>k</em> = 5). Only content words—nouns, verbs, adjectives, and adverbs—are retained. All candidate co-occurring words are ranked by frequency, and the most frequent ones are selected as nodes in the semantic network.</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>2. Construction of Semantic Representations</h3>
-                            <p>For each node word, the distribution of its contextual co-occurring words in the corpus is calculated and encoded as a vector representation. Each vector captures the word's distributional profile across usage contexts, rather than its dictionary meaning.</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>3. Similarity and Distance Calculation</h3>
-                            <p>The system uses cosine similarity to measure the distributional similarity between node words and converts similarity values into distances. Higher similarity indicates more similar usage environments in the corpus, which corresponds to shorter spatial distances in the semantic network.</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>4. Mapping to a Two-Dimensional Space</h3>
-                            <p>For visualization purposes, Multidimensional Scaling (MDS) is applied to project the high-dimensional semantic distance relationships onto a two-dimensional plane. This procedure aims to preserve the original distance structure as much as possible, so that semantically similar words appear closer to one another in the plot.</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>5. Visualization Conventions</h3>
-                            <p>In the semantic network, visual elements are interpreted as follows:</p>
-                            <ul class="semantic-list">
-                                <li><strong>Nodes:</strong> the target word and its high-frequency collocates;</li>
-                                <li><strong>Node size:</strong> proportional to the word's relative frequency in the corpus;</li>
-                                <li><strong>Node color:</strong> indicates the word's most frequent part of speech;</li>
-                                <li><strong>Edges:</strong> connect the target word with each collocate, representing their structural association;</li>
-                                <li><strong>Inter-node distance:</strong> reflects similarity in distributional usage, rather than semantic intensity or evaluative orientation.</li>
-                            </ul>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>6. Corpus Source</h3>
-                            <p>The data used for this semantic network are drawn from the project's self-constructed Global Trending Words Corpus (2024). The corpus is compiled from publicly available online texts, covering authentic usage of trending words in social media, online discussions, and media reports. All computations are based on naturally occurring language data, rather than dictionary definitions or artificially constructed examples.</p>
-                        </div>
-
-                        <div class="semantic-section">
-                            <h3>7. Software and Tools</h3>
-                            <p>The semantic network is constructed using open-source natural language processing and data analysis tools, including:</p>
-                            <ul class="semantic-list">
-                                <li><strong>spaCy:</strong> for tokenization, part-of-speech tagging, and lemmatization of English texts;</li>
-                                <li><strong>scikit-learn:</strong> for cosine similarity computation and Multidimensional Scaling (MDS);</li>
-                                <li><strong>NumPy:</strong> for vector and matrix operations;</li>
-                                <li><strong>Matplotlib:</strong> for visualizing the semantic network.</li>
-                            </ul>
-                            <p>All analytical procedures are implemented in a Python environment. <a href="#" target="_blank">The source code is available here</a>.</p>
-                        </div>
+                    <!-- 语义网络可视化图 -->
+                    <div class="semantic-network-wrapper">
+                        <div id="semantic-network-container" class="semantic-network-canvas"></div>
+                        <p class="network-hint">提示：拖拽节点可调整位置，滚轮缩放，拖拽空白区域平移 | Tip: Drag nodes, scroll to zoom, drag background to pan</p>
                     </div>
                 </div>
             </section>
         </main>
     </div>
 
-    <script src="js/word.js?v=8"></script>
+    <script src="js/semantic-network.js?v=9"></script>
+    <script src="js/word.js?v=14"></script>
     <script src="js/charts.js?v=4"></script>
     <script>
         // 简化版星空背景
@@ -356,6 +286,47 @@
                 window.createFrequencyChart(frequencyData);
             }
         };
+
+        // 语义网络帮助提示框
+        (function() {
+            const helpBtn = document.getElementById('semantic-help-btn');
+            const helpTooltip = document.getElementById('semantic-help-tooltip');
+            const helpLangBtns = document.querySelectorAll('.help-lang-btn');
+            const helpContentZh = document.getElementById('help-content-zh');
+            const helpContentEn = document.getElementById('help-content-en');
+
+            if (!helpBtn || !helpTooltip) return;
+
+            // 点击按钮切换提示框
+            helpBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                helpTooltip.classList.toggle('active');
+            });
+
+            // 点击外部关闭提示框
+            document.addEventListener('click', (e) => {
+                if (!helpTooltip.contains(e.target) && e.target !== helpBtn) {
+                    helpTooltip.classList.remove('active');
+                }
+            });
+
+            // 语言切换
+            helpLangBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const lang = btn.dataset.lang;
+                    helpLangBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    if (lang === 'zh') {
+                        helpContentZh.style.display = 'block';
+                        helpContentEn.style.display = 'none';
+                    } else {
+                        helpContentZh.style.display = 'none';
+                        helpContentEn.style.display = 'block';
+                    }
+                });
+            });
+        })();
     </script>
 </body>
 </html>

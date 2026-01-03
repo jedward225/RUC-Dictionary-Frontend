@@ -53,9 +53,9 @@ body.index-page {
     z-index: 1;
 }
 
-/* 左侧：地球区域 */
+/* 左侧：地球区域 (黄金分割 61.8%) */
 .globe-section {
-    flex: 1;
+    flex: 0.618;
     position: relative;
     cursor: grab;
     overflow: hidden;
@@ -95,9 +95,9 @@ body.index-page {
     50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
 }
 
-/* 右侧：搜索区域 */
+/* 右侧：搜索区域 (黄金分割 38.2%) */
 .search-section {
-    width: 500px;
+    flex: 0.382;
     min-width: 450px;
     background: rgba(0, 20, 50, 0.4);
     backdrop-filter: blur(20px);
@@ -131,8 +131,20 @@ body.index-page {
     text-align: right;
 }
 
+.header-logos {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+}
+
+.ruc-logo {
+    height: 55px;
+    filter: brightness(1.2) drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
+}
+
 .brain-logo {
-    height: 45px;
+    height: 41px;
     filter: brightness(1.2) drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
 }
 
@@ -145,9 +157,9 @@ body.index-page {
 
 /* 渐变发光标题 */
 .site-title {
-    font-size: 2.2rem;
+    font-size: 2.6rem;
     font-weight: 300;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     line-height: 1.3;
 }
 
@@ -177,7 +189,7 @@ body.index-page {
 }
 
 .title-sub {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
     color: #ffffff;
     text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
 }
@@ -201,8 +213,8 @@ body.index-page {
     background: rgba(0, 50, 100, 0.3);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(0, 212, 255, 0.3);
-    border-radius: 30px;
-    padding: 14px 20px;
+    border-radius: 35px;
+    padding: 18px 25px;
     transition: all 0.3s ease;
     box-shadow:
         0 0 20px rgba(0, 212, 255, 0.1),
@@ -219,8 +231,8 @@ body.index-page {
 
 .search-label {
     color: var(--glow-cyan);
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 1.05rem;
+    font-weight: 600;
     white-space: nowrap;
     text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
 }
@@ -239,7 +251,7 @@ body.index-page {
     border: none;
     outline: none;
     color: #ffffff;
-    font-size: 1rem;
+    font-size: 1.15rem;
 }
 
 .search-input::placeholder {
@@ -273,17 +285,17 @@ body.index-page {
 
 .hot-label {
     color: var(--meteor-blue-light);
-    font-size: 0.85rem;
+    font-size: 1rem;
     opacity: 0.7;
 }
 
 .hot-word {
-    padding: 6px 16px;
+    padding: 8px 18px;
     background: rgba(0, 212, 255, 0.1);
     border: 1px solid rgba(0, 212, 255, 0.3);
     border-radius: 20px;
     color: var(--meteor-blue-light);
-    font-size: 0.85rem;
+    font-size: 1rem;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -302,26 +314,51 @@ body.index-page {
     border-top: 1px solid rgba(0, 212, 255, 0.1);
 }
 
+.footer-title {
+    color: var(--glow-cyan);
+    font-size: 0.75rem;
+    text-align: center;
+    margin: 0 0 10px 0;
+    opacity: 0.5;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
 .footer-links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 10px;
+}
+
+.footer-links.dictionaries {
     display: grid;
-    grid-template-columns: repeat(5, max-content);
-    justify-content: center;
-    justify-items: center;
-    margin-bottom: 8px;
-    line-height: 1.8;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    width: 100%;
+    max-width: 580px;
+    margin: 0 auto 10px auto;
+}
+
+.footer-links.dictionaries a {
+    border-right: 1px solid rgba(147, 181, 207, 0.25);
+    text-align: center;
+}
+
+.footer-links.dictionaries a:nth-child(5n) {
+    border-right: none;
 }
 
 .footer-links a {
     color: var(--meteor-blue-light);
-    font-size: 0.7rem;
+    font-size: 0.85rem;
     text-decoration: none;
     transition: all 0.2s ease;
-    opacity: 0.6;
+    opacity: 0.7;
     text-align: center;
-    border-right: 1px solid rgba(147, 181, 207, 0.2);
-    padding: 0 12px;
-    width: 100%;
-    box-sizing: border-box;
+    padding: 3px 10px;
+    white-space: nowrap;
 }
 
 .footer-links a:hover {
@@ -330,18 +367,15 @@ body.index-page {
     text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
 }
 
-/* 每行最后一个去掉右边框 */
-.footer-links.dictionaries a:nth-child(5n) {
-    border-right: none;
-}
-
-.footer-links.dictionaries a:last-child {
-    border-right: none;
-}
-
 .footer-links.institutions {
-    grid-template-columns: repeat(3, 1fr);
+    flex-direction: row;
+    justify-content: center;
     margin-top: 8px;
+}
+
+.footer-links.institutions a {
+    border-right: 1px solid rgba(147, 181, 207, 0.25);
+    padding: 2px 14px;
 }
 
 .footer-links.institutions a:last-child {
@@ -350,10 +384,10 @@ body.index-page {
 
 .copyright {
     color: var(--meteor-blue-light);
-    font-size: 0.65rem;
-    margin: 0;
+    font-size: 0.8rem;
+    margin: 8px 0 0 0;
     text-align: center;
-    opacity: 0.5;
+    opacity: 0.6;
 }
 
 /* Tooltip 样式 */
@@ -440,151 +474,245 @@ body.index-page {
     font-size: 1.125rem;
 }
 
-/* Markdown 内容样式 - 青蓝科幻风 */
+/* Markdown 内容样式 - 方案A: 柔和科幻风 */
 .markdown-content {
-    line-height: 1.8;
-    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.92);
     transition: opacity 0.15s ease;
+    font-size: 1rem;
 }
 
 .markdown-content h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--glow-cyan);
-    margin: 1.5rem 0 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-    text-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #e0f4ff;
+    margin: 2rem 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(138, 75, 156, 0.4);
+    text-shadow: 0 0 20px rgba(138, 75, 156, 0.5);
+    letter-spacing: 0.02em;
 }
 
 .markdown-content h2 {
     font-size: 1.5rem;
-    font-weight: bold;
+    font-weight: 600;
     color: #ffffff;
-    margin: 1.5rem 0 1rem;
-    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+    margin: 2rem 0 1rem;
+    padding-left: 0.75rem;
+    border-left: 3px solid var(--meteor-purple-soft);
+    text-shadow: 0 0 12px rgba(192, 142, 175, 0.4);
 }
 
 .markdown-content h3 {
     font-size: 1.25rem;
     font-weight: 600;
-    color: var(--meteor-blue-light);
-    margin: 1rem 0 0.75rem;
+    color: var(--meteor-purple-soft);
+    margin: 1.5rem 0 0.75rem;
 }
 
 .markdown-content p {
-    margin: 0.75rem 0;
+    margin: 1rem 0;
+    text-align: justify;
 }
 
 .markdown-content a {
-    color: var(--glow-cyan);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-    transition: all 0.2s ease;
+    color: rgba(255, 255, 255, 0.9);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    padding-bottom: 1px;
+    transition: all 0.25s ease;
 }
 
 .markdown-content a:hover {
     color: #ffffff;
-    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+    border-bottom-color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
 }
 
 .markdown-content ul, .markdown-content ol {
-    margin: 0.75rem 0;
-    padding-left: 1.5rem;
+    margin: 1rem 0;
+    padding-left: 1.75rem;
 }
 
 .markdown-content li {
-    margin: 0.25rem 0;
+    margin: 0.5rem 0;
+    padding-left: 0.25rem;
+}
+
+.markdown-content li::marker {
+    color: var(--meteor-purple-soft);
 }
 
 .markdown-content blockquote {
-    margin: 1rem 0;
-    padding: 1rem 1.25rem;
-    background: rgba(0, 212, 255, 0.08);
-    border-left: 4px solid var(--glow-cyan);
-    border-radius: 0 8px 8px 0;
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    background: linear-gradient(135deg, rgba(138, 75, 156, 0.12) 0%, rgba(36, 116, 181, 0.08) 100%);
+    border-left: 4px solid;
+    border-image: linear-gradient(180deg, var(--meteor-purple-deep), var(--meteor-blue-nile)) 1;
+    border-radius: 0 12px 12px 0;
+    backdrop-filter: blur(4px);
 }
 
 .markdown-content blockquote p {
-    margin: 0.5rem 0;
+    margin: 0.625rem 0;
+    text-align: left;
+}
+
+.markdown-content blockquote p:first-child {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .markdown-content table {
     width: 100%;
-    margin: 1rem 0;
-    border-collapse: collapse;
-    font-size: 0.9rem;
+    margin: 1.5rem 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 0.875rem;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
 }
 
 .markdown-content th, .markdown-content td {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid rgba(0, 212, 255, 0.15);
+    padding: 0.625rem 0.875rem;
+    border: none;
+    border-bottom: 1px solid rgba(138, 75, 156, 0.2);
     text-align: left;
 }
 
 .markdown-content th {
-    background: rgba(0, 212, 255, 0.15);
+    background: linear-gradient(135deg, rgba(138, 75, 156, 0.35) 0%, rgba(36, 116, 181, 0.25) 100%);
     font-weight: 600;
-    color: var(--glow-cyan);
+    color: #ffffff;
+    text-transform: none;
+    letter-spacing: 0.01em;
 }
 
 .markdown-content tr:nth-child(even) {
-    background: rgba(0, 50, 100, 0.2);
+    background: rgba(138, 75, 156, 0.08);
+}
+
+.markdown-content tr:nth-child(odd) {
+    background: rgba(36, 116, 181, 0.05);
+}
+
+.markdown-content tr:hover {
+    background: rgba(138, 75, 156, 0.15);
+}
+
+.markdown-content tr:last-child td {
+    border-bottom: none;
 }
 
 .markdown-content img {
     max-width: 100%;
     height: auto;
-    margin: 1rem auto;
+    margin: 1.5rem auto;
     display: block;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 40px rgba(138, 75, 156, 0.15);
+    border: 1px solid rgba(138, 75, 156, 0.2);
 }
 
 .markdown-content em {
     font-style: italic;
-    color: var(--meteor-blue-light);
+    color: rgba(255, 255, 255, 0.95);
 }
 
 .markdown-content strong {
-    font-weight: bold;
+    font-weight: 600;
     color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
 }
 
 .markdown-content code {
-    background: rgba(0, 212, 255, 0.15);
-    padding: 0.125rem 0.375rem;
+    background: rgba(138, 75, 156, 0.2);
+    padding: 0.2rem 0.5rem;
     border-radius: 4px;
-    font-family: monospace;
-    font-size: 0.9em;
-    color: var(--glow-cyan);
+    font-family: 'SF Mono', 'Consolas', monospace;
+    font-size: 0.875em;
+    color: var(--meteor-purple-soft);
+    border: 1px solid rgba(138, 75, 156, 0.15);
 }
 
 .markdown-content hr {
-    margin: 2rem 0;
+    margin: 2.5rem 0;
     border: none;
-    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(138, 75, 156, 0.5), rgba(36, 116, 181, 0.5), transparent);
 }
 
 /* 注脚样式 */
 .markdown-content sup {
-    font-size: 0.75em;
+    font-size: 0.7em;
     vertical-align: super;
+    margin-left: 1px;
 }
 
 .markdown-content sup a {
-    color: var(--glow-cyan);
+    color: var(--meteor-purple-soft);
     text-decoration: none;
+    border-bottom: none;
+    padding: 0 2px;
+    transition: all 0.2s ease;
 }
 
-/* 图片说明文字 */
-.markdown-content img + em,
-.markdown-content p > em:only-child {
+.markdown-content sup a:hover {
+    color: #ffffff;
+    text-shadow: 0 0 6px rgba(192, 142, 175, 0.8);
+}
+
+/* 图片说明文字 - 仅针对紧跟图片的说明 */
+.markdown-content img + em {
     display: block;
     text-align: center;
-    font-size: 0.875rem;
-    color: var(--meteor-blue-light);
-    margin-top: -0.5rem;
+    font-size: 0.8125rem;
+    color: rgba(192, 142, 175, 0.85);
+    margin-top: 0.75rem;
+    font-style: italic;
+}
+
+/* 图片后紧跟的段落如果只有斜体，视为图片说明 */
+.markdown-content .image-caption {
+    text-align: center;
+    font-size: 0.8125rem;
+    color: rgba(192, 142, 175, 0.85);
+    margin-top: -0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.markdown-content .image-caption em {
+    font-style: italic;
+}
+
+/* ==================== 语义化高亮类 ==================== */
+/* 使用说明：
+   .term     - 词条词（如 brat, bratt），斜体白色
+   .hl       - 通用高亮，柔紫色
+   .hl-blue  - 蓝色高亮，用于区分不同类型
+   .hl-green - 绿色高亮，用于 brat绿 等特殊文化术语
+*/
+
+.markdown-content .term {
+    font-style: italic;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.markdown-content .hl {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+}
+
+.markdown-content .hl-blue {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+}
+
+.markdown-content .hl-green {
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
 }
 
 /* 语言切换按钮 */
@@ -596,11 +724,6 @@ body.index-page {
 
 .lang-btn:hover {
     opacity: 0.9;
-}
-
-.lang-btn.active {
-    background: var(--meteor-purple-deep) !important;
-    color: var(--meteor-yellow-bright) !important;
 }
 
 /* 响应式设计 */
@@ -671,6 +794,7 @@ body.word-page {
     background: radial-gradient(ellipse at 50% 0%, #001d3d 0%, #000a1a 100%);
     min-height: 100vh;
     overflow-x: hidden;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 #bg-canvas-simple {
@@ -686,9 +810,9 @@ body.word-page {
 .word-container {
     position: relative;
     z-index: 1;
-    max-width: 1100px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 30px 40px;
+    padding: 30px 50px;
 }
 
 /* 页面头部 */
@@ -764,7 +888,7 @@ body.word-page {
 /* 标签页导航 */
 .tab-nav {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 25px;
     flex-wrap: wrap;
     justify-content: center;
@@ -773,13 +897,15 @@ body.word-page {
 .tab-btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 12px 22px;
-    background: rgba(0, 50, 100, 0.3);
-    border: 1px solid rgba(0, 212, 255, 0.2);
-    border-radius: 25px;
+    justify-content: center;
+    gap: 10px;
+    padding: 18px 20px;
+    min-width: 160px;
+    background: rgba(0, 50, 100, 0.4);
+    border: 2px solid rgba(0, 212, 255, 0.25);
+    border-radius: 30px;
     color: var(--meteor-blue-light);
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
 }
@@ -800,19 +926,20 @@ body.word-page {
 .tab-text {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    text-align: center;
     line-height: 1.3;
 }
 
 .tab-en {
-    font-size: 0.85rem;
-    font-weight: 500;
+    font-size: 1.1rem;
+    font-weight: 600;
     color: var(--glow-cyan);
 }
 
 .tab-zh {
-    font-size: 0.75rem;
-    opacity: 0.8;
+    font-size: 0.95rem;
+    opacity: 0.85;
 }
 
 .tab-btn.active .tab-en {
@@ -846,6 +973,7 @@ body.word-page {
     border-radius: 20px;
     padding: 35px;
     transition: all 0.3s ease;
+    text-align: justify;
 }
 
 .panel-card:hover {
@@ -894,29 +1022,29 @@ body.word-page {
 /* 语言切换按钮 - 新样式 */
 .lang-switch {
     display: flex;
-    gap: 8px;
+    gap: 6px;
 }
 
 .lang-switch .lang-btn {
-    padding: 8px 16px;
-    background: rgba(0, 50, 100, 0.3);
-    border: 1px solid rgba(0, 212, 255, 0.2);
-    border-radius: 20px;
-    color: var(--meteor-blue-light);
-    font-size: 0.85rem;
+    padding: 6px 14px;
+    background: transparent;
+    border: 1px solid rgba(0, 212, 255, 0.25);
+    border-radius: 15px;
+    color: rgba(0, 212, 255, 0.6);
+    font-size: 0.8rem;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 .lang-switch .lang-btn:hover {
-    background: rgba(0, 212, 255, 0.15);
+    color: var(--glow-cyan);
+    border-color: rgba(0, 212, 255, 0.5);
 }
 
 .lang-switch .lang-btn.active {
-    background: var(--glow-cyan);
+    background: rgba(0, 212, 255, 0.15);
     border-color: var(--glow-cyan);
-    color: #000a1a;
-    box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+    color: var(--glow-cyan);
 }
 
 /* 语义网络说明样式 */
@@ -1043,7 +1171,7 @@ body.word-page {
 }
 
 .info-value {
-    color: var(--meteor-purple-light);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 1rem;
 }
 
@@ -1140,7 +1268,7 @@ body.word-page {
 }
 
 .def-text {
-    color: var(--meteor-purple-light);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* 子义项 */
@@ -1195,16 +1323,14 @@ body.word-page {
 }
 
 .example-sentence {
-    color: var(--meteor-purple-light);
+    color: rgba(255, 255, 255, 0.9);
     line-height: 1.7;
     margin-bottom: 8px;
 }
 
 .example-translation {
-    color: var(--meteor-blue-light);
+    color: rgba(255, 255, 255, 0.75);
     font-size: 0.95rem;
-    font-style: italic;
-    opacity: 0.8;
     margin-bottom: 8px;
 }
 
@@ -1308,6 +1434,7 @@ body.word-page {
     color: #ffffff;
 }
 
+.concordance-num,
 .concordance-left,
 .concordance-keyword,
 .concordance-right {
@@ -1317,10 +1444,20 @@ body.word-page {
     border-bottom: 1px solid rgba(0, 212, 255, 0.08);
 }
 
+.concordance-line:last-child .concordance-num,
 .concordance-line:last-child .concordance-left,
 .concordance-line:last-child .concordance-keyword,
 .concordance-line:last-child .concordance-right {
     border-bottom: none;
+}
+
+.concordance-num {
+    width: 40px;
+    text-align: center;
+    color: rgba(0, 212, 255, 0.5);
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding-right: 10px;
 }
 
 .concordance-left {
@@ -1431,4 +1568,338 @@ body.word-page {
         flex-direction: column;
         gap: 15px;
     }
+}
+
+/* ==================== 暖金配色 (Warm Gold) ==================== */
+body[data-scheme="b"] .sense-title {
+    color: #FBBF24;
+}
+
+body[data-scheme="b"] .sense-label {
+    color: #FDE68A;
+}
+
+body[data-scheme="b"] .def-text {
+    color: #FAF5FF;
+}
+
+body[data-scheme="b"] .example-sentence {
+    color: #FAF5FF;
+}
+
+body[data-scheme="b"] .example-translation {
+    color: #E9D5FF;
+    opacity: 0.9;
+}
+
+body[data-scheme="b"] .example-year {
+    color: #A8A29E;
+}
+
+body[data-scheme="b"] .example-source {
+    color: #A8A29E;
+}
+
+body[data-scheme="b"] .subsense-label {
+    color: #FDE68A;
+}
+
+body[data-scheme="b"] .examples-title {
+    color: #FBBF24;
+}
+
+body[data-scheme="b"] .def-lang-tag {
+    background: rgba(251, 191, 36, 0.15);
+    color: #FBBF24;
+}
+
+body[data-scheme="b"] .sense-block {
+    border-color: rgba(251, 191, 36, 0.15);
+}
+
+body[data-scheme="b"] .sense-block:hover {
+    border-color: rgba(251, 191, 36, 0.3);
+    box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+}
+
+body[data-scheme="b"] .subsense-block {
+    border-left-color: #FBBF24;
+}
+
+/* 方案 B: History/Markdown 区域 */
+body[data-scheme="b"] .markdown-content {
+    color: rgba(255, 255, 255, 0.92);
+}
+
+body[data-scheme="b"] .markdown-content .term {
+    color: #ffffff;
+}
+
+body[data-scheme="b"] .markdown-content .hl {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+body[data-scheme="b"] .markdown-content .hl-blue {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+body[data-scheme="b"] .markdown-content h2 {
+    color: rgba(255, 255, 255, 0.95);
+}
+
+body[data-scheme="b"] .markdown-content blockquote {
+    border-color: rgba(0, 212, 255, 0.3);
+    background: rgba(0, 212, 255, 0.05);
+}
+
+/* Semantic Network 暖金配色 */
+body[data-scheme="b"] .semantic-content {
+    color: #FAF5FF;
+}
+
+body[data-scheme="b"] .semantic-content p {
+    color: #FAF5FF;
+}
+
+body[data-scheme="b"] .semantic-section h3 {
+    color: #FBBF24;
+    border-bottom-color: rgba(251, 191, 36, 0.3);
+}
+
+body[data-scheme="b"] .semantic-section em {
+    color: #FDE68A;
+}
+
+body[data-scheme="b"] .semantic-list li strong {
+    color: #FDE68A;
+}
+
+body[data-scheme="b"] .semantic-list li::before {
+    color: #FBBF24;
+}
+
+body[data-scheme="b"] .semantic-intro {
+    background: rgba(251, 191, 36, 0.08);
+    border-left-color: #FBBF24;
+}
+
+body[data-scheme="b"] .semantic-section a {
+    color: #FBBF24;
+}
+
+body[data-scheme="b"] .semantic-section a:hover {
+    color: #FDE68A;
+    text-shadow: 0 0 10px rgba(251, 191, 36, 0.5);
+}
+
+/* ==================== 语义网络可视化样式 ==================== */
+.semantic-network-wrapper {
+    position: relative;
+    margin-bottom: 30px;
+    background: rgba(0, 20, 40, 0.5);
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(0, 212, 255, 0.15);
+}
+
+.semantic-network-canvas {
+    width: 100%;
+    min-height: 600px;
+    background: radial-gradient(ellipse at center, rgba(0, 40, 80, 0.3) 0%, rgba(0, 10, 26, 0.5) 100%);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.semantic-network-svg {
+    display: block;
+    cursor: move;
+}
+
+.network-hint {
+    text-align: center;
+    color: #64748B;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    margin-bottom: 0;
+}
+
+/* 标题带帮助按钮 */
+.panel-title-with-help {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+}
+
+.panel-title-with-help .panel-title {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+/* 帮助提示框 */
+.help-tooltip-container {
+    position: relative;
+    z-index: 100;
+}
+
+.help-btn {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid rgba(0, 212, 255, 0.4);
+    color: var(--glow-cyan);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.help-btn:hover {
+    background: rgba(0, 212, 255, 0.15);
+    border-color: var(--glow-cyan);
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+}
+
+.help-tooltip {
+    display: none;
+    position: absolute;
+    top: 35px;
+    right: 0;
+    width: 320px;
+    background: rgba(0, 20, 40, 0.98);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 12px;
+    padding: 0;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+}
+
+.help-tooltip.active {
+    display: block;
+    animation: tooltipFadeIn 0.2s ease;
+}
+
+@keyframes tooltipFadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.help-tooltip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    background: rgba(0, 212, 255, 0.08);
+    border-radius: 12px 12px 0 0;
+}
+
+.help-tooltip-title {
+    color: var(--glow-cyan);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.help-lang-switch {
+    display: flex;
+    gap: 5px;
+}
+
+.help-lang-btn {
+    padding: 4px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: transparent;
+    color: #94A3B8;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.help-lang-btn:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #E2E8F0;
+}
+
+.help-lang-btn.active {
+    background: rgba(251, 191, 36, 0.2);
+    border-color: #FBBF24;
+    color: #FBBF24;
+}
+
+.help-tooltip-content {
+    padding: 15px;
+    max-height: 350px;
+    overflow-y: auto;
+}
+
+.help-tooltip-content p {
+    margin: 0 0 10px 0;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #E8F4F8;
+}
+
+.help-tooltip-content p:last-child {
+    margin-bottom: 0;
+}
+
+.help-tooltip-content strong {
+    color: #FDE68A;
+}
+
+/* 节点样式 */
+.network-node {
+    transition: filter 0.2s ease;
+}
+
+.network-node:hover {
+    filter: brightness(1.2);
+}
+
+/* 连线样式 */
+.network-link {
+    stroke: #4B5563;
+    stroke-opacity: 0.6;
+}
+
+/* 标签样式 */
+.network-label {
+    font-family: 'Inter', sans-serif;
+    user-select: none;
+}
+
+/* 配色方案 A 的语义网络 */
+body[data-scheme="a"] .semantic-network-wrapper {
+    border-color: rgba(0, 212, 255, 0.2);
+}
+
+body[data-scheme="a"] .network-hint {
+    color: #64748B;
+}
+
+/* 配色方案 B 的语义网络 */
+body[data-scheme="b"] .semantic-network-wrapper {
+    border-color: rgba(251, 191, 36, 0.2);
+}
+
+body[data-scheme="b"] .network-hint {
+    color: #A8A29E;
+}
+
+/* 配色方案 C 的语义网络 */
+body[data-scheme="c"] .semantic-network-wrapper {
+    border-color: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+body[data-scheme="c"] .network-hint {
+    color: #6B7280;
 }

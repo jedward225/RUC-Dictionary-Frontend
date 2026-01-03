@@ -1,62 +1,79 @@
 import * as THREE from 'three';
 
-// 流行语数据
+// 流行语数据 (2024年度全球流行语)
 const slangData = [
-    // 英文
-    { word: "brat", origin: "English", meaning: "叛逆风格" },
-    { word: "slay", origin: "English", meaning: "超级厉害" },
-    { word: "vibe", origin: "English", meaning: "氛围感" },
-    { word: "fire", origin: "English", meaning: "太酷了" },
-    { word: "stan", origin: "English", meaning: "狂热粉丝" },
-    { word: "lit", origin: "English", meaning: "超嗨的" },
-    { word: "tea", origin: "English", meaning: "八卦消息" },
-    { word: "flex", origin: "English", meaning: "秀一下" },
-    { word: "ghost", origin: "English", meaning: "突然消失" },
-    { word: "sus", origin: "English", meaning: "可疑的" },
-    { word: "no cap", origin: "English", meaning: "不骗你" },
-    { word: "bussin", origin: "English", meaning: "超好吃" },
+    // ==================== 英语 (多地区) ====================
+    { word: "brainrot", origin: "English", meaning: "刷屏综合症" },
+    { word: "brat", origin: "English", meaning: "叛逆酷女孩" },
+    { word: "demure", origin: "English", meaning: "端庄优雅" },
+    { word: "skibidi", origin: "English", meaning: "无厘头梗" },
+    { word: "sigma", origin: "English", meaning: "独狼男性" },
+    { word: "hawk tuah", origin: "English", meaning: "吐口水梗" },
+    { word: "looksmaxxing", origin: "English", meaning: "颜值最大化" },
+    { word: "yapping", origin: "English", meaning: "话太多" },
+    { word: "enshittification", origin: "English", meaning: "平台劣化" },
+    { word: "delulu", origin: "English", meaning: "妄想症" },
+    { word: "pookie", origin: "English", meaning: "亲爱的" },
+    { word: "gyatt", origin: "English", meaning: "身材赞" },
+    { word: "fanum tax", origin: "English", meaning: "偷吃一口" },
+    { word: "Ohio", origin: "English", meaning: "奇葩的" },
+    { word: "romantasy", origin: "English", meaning: "浪漫奇幻" },
     { word: "rizz", origin: "English", meaning: "魅力值" },
+    { word: "aura", origin: "English", meaning: "气场值" },
     { word: "era", origin: "English", meaning: "人生阶段" },
-    { word: "ate", origin: "English", meaning: "太绝了" },
-    { word: "bet", origin: "English", meaning: "没问题" },
-    { word: "cap", origin: "English", meaning: "说谎" },
-    { word: "lowkey", origin: "English", meaning: "有点儿" },
-    { word: "highkey", origin: "English", meaning: "非常" },
-    { word: "snatched", origin: "English", meaning: "好看极了" },
-    { word: "periodt", origin: "English", meaning: "就这样" },
-    { word: "iconic", origin: "English", meaning: "经典的" },
-    { word: "valid", origin: "English", meaning: "合理的" },
-    { word: "based", origin: "English", meaning: "有主见" },
-    { word: "mid", origin: "English", meaning: "一般般" },
-    { word: "L", origin: "English", meaning: "失败" },
-    { word: "W", origin: "English", meaning: "胜利" },
-    { word: "NPC", origin: "English", meaning: "路人" },
-    { word: "main character", origin: "English", meaning: "主角" },
-    // 中文
-    { word: "YYDS", origin: "中文", meaning: "永远的神" },
-    { word: "躺平", origin: "中文", meaning: "放弃内卷" },
-    { word: "内卷", origin: "中文", meaning: "过度竞争" },
-    { word: "绝绝子", origin: "中文", meaning: "太绝了" },
-    { word: "破防", origin: "中文", meaning: "情绪触动" },
-    { word: "凡尔赛", origin: "中文", meaning: "低调炫耀" },
-    { word: "社恐", origin: "中文", meaning: "社交恐惧" },
-    { word: "摆烂", origin: "中文", meaning: "放弃努力" },
-    { word: "佛系", origin: "中文", meaning: "随缘心态" },
-    { word: "芭比Q", origin: "中文", meaning: "完蛋了" },
-    { word: "栓Q", origin: "中文", meaning: "无语了" },
-    { word: "显眼包", origin: "中文", meaning: "爱出风头" },
+    { word: "NPC", origin: "English", meaning: "路人角色" },
+    { word: "slop", origin: "English", meaning: "AI垃圾" },
+
+    // ==================== 汉语 ====================
+    { word: "city不city", origin: "中文", meaning: "洋气吗" },
+    { word: "谷子", origin: "中文", meaning: "二次元周边" },
+    { word: "班味", origin: "中文", meaning: "上班疲惫感" },
+    { word: "松弛感", origin: "中文", meaning: "从容心态" },
+    { word: "情绪价值", origin: "中文", meaning: "情感满足" },
+    { word: "黑神话悟空", origin: "中文", meaning: "国产3A大作" },
+    { word: "新质生产力", origin: "中文", meaning: "创新驱动力" },
+    { word: "硬控", origin: "中文", meaning: "强制吸引" },
+    { word: "小孩哥姐", origin: "中文", meaning: "厉害小孩" },
     { word: "搭子", origin: "中文", meaning: "临时伙伴" },
-    // 日语
-    { word: "やばい", origin: "日本語", meaning: "不得了" },
-    { word: "草", origin: "日本語", meaning: "笑死了" },
-    { word: "推し", origin: "日本語", meaning: "最爱" },
-    // 韩语
-    { word: "대박", origin: "한국어", meaning: "太棒了" },
-    { word: "헐", origin: "한국어", meaning: "天哪" },
-    // 其他语言
-    { word: "guay", origin: "Español", meaning: "很酷" },
-    { word: "ouf", origin: "Français", meaning: "疯狂" },
-    { word: "krass", origin: "Deutsch", meaning: "太猛了" },
+
+    // ==================== 法语 ====================
+    { word: "surtourisme", origin: "Français", meaning: "过度旅游" },
+    { word: "wokisme", origin: "Français", meaning: "觉醒主义" },
+    { word: "démission silencieuse", origin: "Français", meaning: "安静辞职" },
+    { word: "détox digitale", origin: "Français", meaning: "数字排毒" },
+    { word: "prompt", origin: "Français", meaning: "AI提示词" },
+    { word: "féminicide", origin: "Français", meaning: "杀害女性" },
+    { word: "hubris", origin: "Français", meaning: "傲慢自大" },
+
+    // ==================== 德语 ====================
+    { word: "Ampel-aus", origin: "Deutsch", meaning: "联盟解散" },
+    { word: "kriegstüchtig", origin: "Deutsch", meaning: "战备就绪" },
+    { word: "Talahon", origin: "Deutsch", meaning: "街头青年" },
+    { word: "Renaturierung", origin: "Deutsch", meaning: "再自然化" },
+    { word: "Deindustrialisierung", origin: "Deutsch", meaning: "去工业化" },
+    { word: "Biodeutsch", origin: "Deutsch", meaning: "血统德国人" },
+
+    // ==================== 西班牙语 ====================
+    { word: "turistificación", origin: "Español", meaning: "旅游过度化" },
+    { word: "gordofobia", origin: "Español", meaning: "肥胖歧视" },
+    { word: "mewing", origin: "Español", meaning: "下颌线锻炼" },
+    { word: "reduflación", origin: "Español", meaning: "缩水通胀" },
+    { word: "inquiokupa", origin: "Español", meaning: "租霸强占" },
+    { word: "Coquette", origin: "Español", meaning: "娇媚风格" },
+
+    // ==================== 俄语 ====================
+    { word: "Чиназес", origin: "Русский", meaning: "太棒了" },
+    { word: "Бусификация", origin: "Русский", meaning: "强制征兵" },
+    { word: "Искусственный интеллект", origin: "Русский", meaning: "人工智能" },
+
+    // ==================== 日语 ====================
+    { word: "推し活", origin: "日本語", meaning: "追星活动" },
+    { word: "蛙化現象", origin: "日本語", meaning: "突然幻灭" },
+    { word: "界隈", origin: "日本語", meaning: "小圈子" },
+
+    // ==================== 韩语 ====================
+    { word: "무해력", origin: "한국어", meaning: "无害魅力" },
+    { word: "텅장", origin: "한국어", meaning: "钱包空空" },
 ];
 
 // ==================== 背景星座网络 ====================

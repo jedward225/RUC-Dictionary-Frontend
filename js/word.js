@@ -77,7 +77,7 @@ class BuzzwordDisplay {
 
     displayBuzzwordData(data) {
         // 更新页面标题
-        document.title = `${data.headword} - Meteor Shower 流行语词典`;
+        document.title = `${data.headword} - 全球流行语多语种词典`;
 
         // 更新头部
         document.getElementById('headword').textContent = data.headword;
@@ -102,11 +102,30 @@ class BuzzwordDisplay {
             document.getElementById('frequency-source').textContent = `Data: ${data.frequencySource}`;
         }
 
-        // 更新相关词汇和索引行
-        this.updateRelatedTerms(data.relatedTerms, data.concordances);
+        // 更新索引行 (Concordance)
+        this.updateConcordance(data.concordances);
 
         // 创建词频图表
         this.createFrequencyChart(data.frequencyData);
+
+        // 初始化语义网络可视化
+        this.setupSemanticNetworkVisualization(data);
+    }
+
+    setupSemanticNetworkVisualization(data) {
+        // 存储数据以供语言切换使用
+        this.semanticNetworkData = data;
+
+        // 初始化语义网络图
+        if (typeof window.initSemanticNetwork === 'function' && data.semanticNetwork) {
+            // 延迟初始化，确保 DOM 已渲染
+            setTimeout(() => {
+                window.initSemanticNetwork(data, 'zh');
+            }, 100);
+        }
+
+        // 更新语言切换按钮事件
+        this.setupSemanticNetworkLangSwitch();
     }
 
     updateInfoSheet(data) {
@@ -121,6 +140,13 @@ class BuzzwordDisplay {
             this.getText(data.firstRecorded);
         document.getElementById('info-trending').textContent = data.trendingPeriod;
         document.getElementById('info-senses').textContent = data.numberOfSenses;
+
+        // Related Work (原 Thesaurus)
+        if (data.relatedTerms && data.relatedTerms.length > 0) {
+            document.getElementById('info-related-work').textContent = data.relatedTerms.join(', ');
+        } else {
+            document.getElementById('info-related-work').textContent = '-';
+        }
     }
 
     updateDefinition(senses) {
@@ -257,53 +283,31 @@ class BuzzwordDisplay {
         return `${before}<span class="keyword-highlight">${word}</span>${after}`;
     }
 
-    updateRelatedTerms(relatedTerms, concordances) {
-        const container = document.getElementById('thesaurus-content');
+    updateConcordance(concordances) {
+        const container = document.getElementById('concordance-content');
         container.innerHTML = '';
 
-        if ((!relatedTerms || relatedTerms.length === 0) && (!concordances || concordances.length === 0)) {
-            container.innerHTML = '<p class="loading-text">No related terms / 暂无相关词汇</p>';
+        if (!concordances || concordances.length === 0) {
+            container.innerHTML = '<p class="loading-text">No concordance data / 暂无索引行数据</p>';
             return;
         }
 
-        // 相关词汇标签
-        if (relatedTerms && relatedTerms.length > 0) {
-            const tagsDiv = document.createElement('div');
-            tagsDiv.className = 'related-tags';
+        const concordanceTable = document.createElement('div');
+        concordanceTable.className = 'concordance-table';
 
-            relatedTerms.forEach(term => {
-                const tag = document.createElement('span');
-                tag.className = 'related-tag';
-                tag.textContent = term;
-                tagsDiv.appendChild(tag);
-            });
+        concordances.forEach((line, index) => {
+            const lineDiv = document.createElement('div');
+            lineDiv.className = 'concordance-line';
+            lineDiv.innerHTML = `
+                <span class="concordance-num">${index + 1}</span>
+                <span class="concordance-left">${line.left}</span>
+                <span class="concordance-keyword">${line.keyword}</span>
+                <span class="concordance-right">${line.right}</span>
+            `;
+            concordanceTable.appendChild(lineDiv);
+        });
 
-            container.appendChild(tagsDiv);
-        }
-
-        // Concordance 索引行
-        if (concordances && concordances.length > 0) {
-            const concordanceTitle = document.createElement('div');
-            concordanceTitle.className = 'context-title';
-            concordanceTitle.textContent = '📝 Concordance Lines / 索引行';
-            container.appendChild(concordanceTitle);
-
-            const concordanceTable = document.createElement('div');
-            concordanceTable.className = 'concordance-table';
-
-            concordances.forEach(line => {
-                const lineDiv = document.createElement('div');
-                lineDiv.className = 'concordance-line';
-                lineDiv.innerHTML = `
-                    <span class="concordance-left">${line.left}</span>
-                    <span class="concordance-keyword">${line.keyword}</span>
-                    <span class="concordance-right">${line.right}</span>
-                `;
-                concordanceTable.appendChild(lineDiv);
-            });
-
-            container.appendChild(concordanceTable);
-        }
+        container.appendChild(concordanceTable);
     }
 
     async updateHistory(data) {
@@ -365,7 +369,8 @@ class BuzzwordDisplay {
                 container.innerHTML = '<p class="loading-text">Loading... / 加载中...</p>';
             }
 
-            const response = await fetch(filePath);
+            const cacheBuster = `?v=${Date.now()}`;
+            const response = await fetch(filePath + cacheBuster);
             if (!response.ok) throw new Error('Failed to load');
             const markdown = await response.text();
 
@@ -392,6 +397,19 @@ class BuzzwordDisplay {
                     const src = img.getAttribute('src');
                     if (src && src.startsWith('../')) {
                         img.setAttribute('src', 'assets/' + src.substring(3));
+                    }
+
+                    // 处理图片说明：检查图片所在段落的下一个兄弟元素
+                    const imgParent = img.parentElement;
+                    if (imgParent && imgParent.tagName === 'P') {
+                        const nextSibling = imgParent.nextElementSibling;
+                        // 如果下一个元素是只包含 <em> 的段落，标记为图片说明
+                        if (nextSibling && nextSibling.tagName === 'P') {
+                            const children = nextSibling.children;
+                            if (children.length === 1 && children[0].tagName === 'EM') {
+                                nextSibling.classList.add('image-caption');
+                            }
+                        }
                     }
                 });
 
@@ -479,6 +497,15 @@ class BuzzwordDisplay {
                     panel.classList.remove('active');
                 });
                 document.getElementById(targetTab).classList.add('active');
+
+                // 当切换到语义网络标签时，重新初始化图表（确保容器尺寸正确）
+                if (targetTab === 'semantic-network' && this.semanticNetworkData) {
+                    setTimeout(() => {
+                        if (typeof window.initSemanticNetwork === 'function') {
+                            window.initSemanticNetwork(this.semanticNetworkData, 'zh');
+                        }
+                    }, 50);
+                }
             });
         });
 
@@ -491,22 +518,40 @@ class BuzzwordDisplay {
         const enBtn = document.getElementById('semantic-lang-en');
         const zhContent = document.getElementById('semantic-content-zh');
         const enContent = document.getElementById('semantic-content-en');
+        const zhHint = document.getElementById('network-hint-zh');
+        const enHint = document.getElementById('network-hint-en');
 
         if (!zhBtn || !enBtn) return;
 
         zhBtn.addEventListener('click', () => {
             zhBtn.classList.add('active');
             enBtn.classList.remove('active');
-            zhContent.classList.add('active');
-            enContent.classList.remove('active');
+            if (zhContent) zhContent.classList.add('active');
+            if (enContent) enContent.classList.remove('active');
+            if (zhHint) zhHint.style.display = 'block';
+            if (enHint) enHint.style.display = 'none';
+            // 切换语义网络图例语言
+            if (typeof window.switchSemanticNetworkLang === 'function') {
+                window.switchSemanticNetworkLang('zh');
+            }
         });
 
         enBtn.addEventListener('click', () => {
             enBtn.classList.add('active');
             zhBtn.classList.remove('active');
-            enContent.classList.add('active');
-            zhContent.classList.remove('active');
+            if (enContent) enContent.classList.add('active');
+            if (zhContent) zhContent.classList.remove('active');
+            if (enHint) enHint.style.display = 'block';
+            if (zhHint) zhHint.style.display = 'none';
+            // 切换语义网络图例语言
+            if (typeof window.switchSemanticNetworkLang === 'function') {
+                window.switchSemanticNetworkLang('en');
+            }
         });
+    }
+
+    setupSemanticNetworkLangSwitch() {
+        // 此方法已整合到 setupSemanticLangSwitch 中
     }
 }
 

@@ -135,6 +135,7 @@ class FrequencyChart {
                         }
                     },
                     y: {
+                        beginAtZero: true,
                         title: {
                             display: true,
                             text: '使用频次 / Frequency',

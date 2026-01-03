@@ -229,21 +229,86 @@
       },
       "relatedTerms": ["brat summer", "brat green", "brat girl", "Charli XCX", "clean girl"],
       "concordances": [
-        {"left": "It's a", "keyword": "BRAT", "right": "summer... but where did this trend come from and where is it going?"},
-        {"left": "the trend, from the colour focus and products that fit the '", "keyword": "BRAT", "right": "' aesthetic to marketing messages and brand activations"},
-        {"left": "BRAT is a noun (\"that's so BRAT\") and an adjective (\"", "keyword": "BRAT", "right": "summer\"), it's a meme and a movement that has brought people together"},
-        {"left": "their audiences through such simple branding. However,", "keyword": "Brat", "right": "provides a lesson in clarity. Reaching existing and new audiences"},
-        {"left": "fans will always buzz over new album releases, but", "keyword": "Brat", "right": "has taken the internet by storm. With many people growing tired of"},
+        {"left": "It's a", "keyword": "brat", "right": "summer... but where did this trend come from and where is it going?"},
+        {"left": "the trend, from the colour focus and products that fit the '", "keyword": "brat", "right": "' aesthetic to marketing messages and brand activations"},
+        {"left": "brat is a noun (\"that's so brat\") and an adjective (\"", "keyword": "brat", "right": "summer\"), it's a meme and a movement that has brought people together"},
+        {"left": "their audiences through such simple branding. However,", "keyword": "brat", "right": "provides a lesson in clarity. Reaching existing and new audiences"},
+        {"left": "fans will always buzz over new album releases, but", "keyword": "brat", "right": "has taken the internet by storm. With many people growing tired of"},
         {"left": "Ahead of the album's release date last month, a", "keyword": "brat", "right": "wall was quietly erected overnight in Brooklyn"},
         {"left": "In modern pop culture, the word", "keyword": "brat", "right": "refers to someone who is confidently rebellious, unapologetic"},
-        {"left": "Given the cultural impact and widespread appeal of", "keyword": "Brat", "right": "Summer, it makes perfect sense for a sneaker brand like"},
+        {"left": "Given the cultural impact and widespread appeal of", "keyword": "brat", "right": "Summer, it makes perfect sense for a sneaker brand like"},
         {"left": "Y2K lip gloss perfectly complements the", "keyword": "brat", "right": "summer vibe with its retro flair and youthful exuberance"},
         {"left": "even potential presidential candidate Kamala Harris is", "keyword": "brat", "right": ". We have singer Charli XCX to thank for the advent of brat summer"},
-        {"left": "background image to one reminiscent of the famous", "keyword": "Brat", "right": "cover. Gevin Reynolds, a spin doctor who previously worked"},
+        {"left": "background image to one reminiscent of the famous", "keyword": "brat", "right": "cover. Gevin Reynolds, a spin doctor who previously worked"},
         {"left": "here is how you and your brand can be", "keyword": "brat", "right": ": 1. Don't overdo it. Being brat is about being yourself"},
-        {"left": "very little merch, and that's the point,\" Appler says. \"", "keyword": "Brat", "right": "is anti-merch; it embodies fan-made, DIY club outfits"},
-        {"left": "so confusing, sometimes, to be alive—but Brat is here and", "keyword": "Brat", "right": "sees us, a companion while the world spins weirdly on"}
-      ]
+        {"left": "very little merch, and that's the point,\" Appler says. \"", "keyword": "brat", "right": "is anti-merch; it embodies fan-made, DIY club outfits"},
+        {"left": "so confusing, sometimes, to be alive—but brat is here and", "keyword": "brat", "right": "sees us, a companion while the world spins weirdly on"}
+      ],
+      "semanticNetwork": {
+        "nodes": [
+          {"id": "brat", "word": "brat", "wordClass": "target", "size": 50, "x": 0, "y": 0},
+          {"id": "summer", "word": "summer", "wordClass": "noun", "size": 35, "x": 0.10, "y": 0.12},
+          {"id": "aesthetic", "word": "aesthetic", "wordClass": "noun", "size": 30, "x": 0.12, "y": 0.08},
+          {"id": "style", "word": "style", "wordClass": "noun", "size": 28, "x": 0.02, "y": 0.20},
+          {"id": "album", "word": "album", "wordClass": "noun", "size": 32, "x": 0.12, "y": -0.06},
+          {"id": "charli", "word": "charli", "wordClass": "noun", "size": 38, "x": 0.18, "y": -0.04},
+          {"id": "xcx", "word": "xcx", "wordClass": "noun", "size": 28, "x": 0.12, "y": -0.28},
+          {"id": "release", "word": "release", "wordClass": "noun", "size": 25, "x": 0.24, "y": -0.14},
+          {"id": "girl", "word": "girl", "wordClass": "noun", "size": 26, "x": -0.06, "y": 0.08},
+          {"id": "brand", "word": "brand", "wordClass": "noun", "size": 28, "x": -0.08, "y": -0.12},
+          {"id": "green", "word": "green", "wordClass": "adjective", "size": 24, "x": 0.02, "y": -0.10},
+          {"id": "new", "word": "new", "wordClass": "adjective", "size": 22, "x": 0.08, "y": -0.10},
+          {"id": "trend", "word": "trend", "wordClass": "noun", "size": 26, "x": 0.02, "y": 0.04},
+          {"id": "embrace", "word": "embrace", "wordClass": "verb", "size": 28, "x": -0.02, "y": 0.14},
+          {"id": "take", "word": "take", "wordClass": "verb", "size": 24, "x": 0.04, "y": 0.02},
+          {"id": "have", "word": "have", "wordClass": "verb", "size": 22, "x": 0.04, "y": -0.02},
+          {"id": "mean", "word": "mean", "wordClass": "verb", "size": 24, "x": -0.10, "y": 0.04},
+          {"id": "just", "word": "just", "wordClass": "adverb", "size": 22, "x": -0.18, "y": -0.02},
+          {"id": "so", "word": "so", "wordClass": "adverb", "size": 24, "x": -0.16, "y": -0.10},
+          {"id": "more", "word": "more", "wordClass": "adverb", "size": 20, "x": -0.22, "y": 0.06}
+        ],
+        "links": [
+          {"source": "brat", "target": "summer"},
+          {"source": "brat", "target": "aesthetic"},
+          {"source": "brat", "target": "style"},
+          {"source": "brat", "target": "album"},
+          {"source": "brat", "target": "charli"},
+          {"source": "brat", "target": "xcx"},
+          {"source": "brat", "target": "release"},
+          {"source": "brat", "target": "girl"},
+          {"source": "brat", "target": "brand"},
+          {"source": "brat", "target": "green"},
+          {"source": "brat", "target": "new"},
+          {"source": "brat", "target": "trend"},
+          {"source": "brat", "target": "embrace"},
+          {"source": "brat", "target": "take"},
+          {"source": "brat", "target": "have"},
+          {"source": "brat", "target": "mean"},
+          {"source": "brat", "target": "just"},
+          {"source": "brat", "target": "so"},
+          {"source": "brat", "target": "more"}
+        ],
+        "legend": {
+          "en": {
+            "title": "Word Class / 词性",
+            "target": "Target / 目标词",
+            "noun": "Noun / 名词",
+            "verb": "Verb / 动词",
+            "adjective": "Adj / 形容词",
+            "adverb": "Adv / 副词",
+            "other": "Other / 其他"
+          },
+          "zh": {
+            "title": "Word Class / 词性",
+            "target": "Target / 目标词",
+            "noun": "Noun / 名词",
+            "verb": "Verb / 动词",
+            "adjective": "Adj / 形容词",
+            "adverb": "Adv / 副词",
+            "other": "Other / 其他"
+          }
+        }
+      }
     },
     "yyds": {
       "headword": "YYDS",
