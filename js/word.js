@@ -259,7 +259,7 @@ class BuzzwordDisplay {
                 <div class="example-translation">译：${zhSentence}</div>
                 ${example.source && example.source.author ? `
                     <div class="example-source">
-                        — ${example.source.author}${example.source.title ? `, <em>${example.source.title}</em>` : ''}
+                        — ${example.source.author}${example.source.title ? `, ${example.source.title}` : ''}
                         ${example.source.url ? `<a href="${example.source.url}" target="_blank">🔗</a>` : ''}
                     </div>
                 ` : ''}

@@ -1242,7 +1242,7 @@ body.word-page {
 
 .sense-label {
     font-size: 1.1rem;
-    color: var(--meteor-yellow-soft);
+    color: rgba(255, 255, 255, 0.8);
     margin-bottom: 15px;
 }
 
@@ -1282,7 +1282,7 @@ body.word-page {
 
 .subsense-label {
     font-size: 1rem;
-    color: var(--meteor-blue-light);
+    color: rgba(255, 255, 255, 0.85);
     font-weight: 600;
     margin-bottom: 10px;
 }
@@ -1318,7 +1318,7 @@ body.word-page {
 
 .example-year {
     font-size: 0.85rem;
-    color: var(--meteor-purple-soft);
+    color: rgba(255, 255, 255, 0.5);
     margin-bottom: 8px;
 }
 
@@ -1336,7 +1336,7 @@ body.word-page {
 
 .example-source {
     font-size: 0.85rem;
-    color: var(--meteor-purple-soft);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .example-source a {
@@ -1572,58 +1572,57 @@ body.word-page {
 
 /* ==================== 暖金配色 (Warm Gold) ==================== */
 body[data-scheme="b"] .sense-title {
-    color: #FBBF24;
+    color: var(--glow-cyan);
 }
 
 body[data-scheme="b"] .sense-label {
-    color: #FDE68A;
+    color: rgba(255, 255, 255, 0.8);
 }
 
 body[data-scheme="b"] .def-text {
-    color: #FAF5FF;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 body[data-scheme="b"] .example-sentence {
-    color: #FAF5FF;
+    color: rgba(255, 255, 255, 0.9);
 }
 
 body[data-scheme="b"] .example-translation {
-    color: #E9D5FF;
-    opacity: 0.9;
+    color: rgba(255, 255, 255, 0.75);
 }
 
 body[data-scheme="b"] .example-year {
-    color: #A8A29E;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 body[data-scheme="b"] .example-source {
-    color: #A8A29E;
+    color: rgba(255, 255, 255, 0.5);
 }
 
 body[data-scheme="b"] .subsense-label {
-    color: #FDE68A;
+    color: rgba(255, 255, 255, 0.85);
 }
 
 body[data-scheme="b"] .examples-title {
-    color: #FBBF24;
+    color: var(--glow-cyan);
 }
 
 body[data-scheme="b"] .def-lang-tag {
-    background: rgba(251, 191, 36, 0.15);
-    color: #FBBF24;
+    background: rgba(0, 212, 255, 0.15);
+    color: var(--glow-cyan);
 }
 
 body[data-scheme="b"] .sense-block {
-    border-color: rgba(251, 191, 36, 0.15);
+    border-color: rgba(0, 212, 255, 0.15);
 }
 
 body[data-scheme="b"] .sense-block:hover {
-    border-color: rgba(251, 191, 36, 0.3);
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.1);
+    border-color: rgba(0, 212, 255, 0.3);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
 }
 
 body[data-scheme="b"] .subsense-block {
-    border-left-color: #FBBF24;
+    border-left-color: var(--glow-cyan);
 }
 
 /* 方案 B: History/Markdown 区域 */
