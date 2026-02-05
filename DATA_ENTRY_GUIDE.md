@@ -27,12 +27,62 @@
 }
 ```
 
-### 第三步：更新主页搜索列表
-编辑 `js/main.js` 文件（第97行附近）：
+### 第三步：更新主页搜索列表（可选）
+如果希望词条出现在主页3D地球上，编辑 `js/main.js` 文件开头的 `slangData` 数组（第4-77行）：
 
 ```javascript
-this.buzzwords = ["brat", "yyds", "躺平", "内卷", "新词条id"];
+const slangData = [
+    // ==================== 英语 (多地区) ====================
+    { word: "brat", origin: "English", meaning: "叛逆酷女孩" },
+    { word: "新词条id", origin: "English", meaning: "简短中文释义" },
+
+    // ==================== 汉语 ====================
+    { word: "躺平", origin: "中文", meaning: "躺平休息" },
+
+    // ==================== 其他语言请参考现有格式 ====================
+];
 ```
+
+**语言标识对照表**：
+| 语言 | origin 值 |
+|------|-----------|
+| 英语 | `"English"` |
+| 中文 | `"中文"` |
+| 法语 | `"Français"` |
+| 德语 | `"Deutsch"` |
+| 西班牙语 | `"Español"` |
+| 俄语 | `"Русский"` |
+| 日语 | `"日本語"` |
+| 韩语 | `"한국어"` |
+
+### 第四步：添加演化历史文档（可选但推荐）
+在 `assets/history/` 文件夹中创建词条的演化历史文档：
+
+```
+assets/history/
+├── 新词条id_en.md    # 英文版历史
+└── 新词条id_zh.md    # 中文版历史
+```
+
+**文档格式示例** (`brat_zh.md`)：
+```markdown
+## 词源与早期含义
+
+"brat" 一词可追溯至古英语时期...
+
+## 现代语义演变
+
+在2024年，该词经历了显著的语义转变...
+
+![专辑封面](../images/brat_cover.png)
+
+*图片说明文字*
+```
+
+**添加插图**：
+1. 将图片放入 `assets/images/` 文件夹
+2. 在 Markdown 中使用 `![描述](../images/图片名.png)` 引用
+3. 图片下方紧跟的斜体文字会自动显示为图片说明
 
 ---
 
@@ -545,6 +595,164 @@ print(f"start: {start}, end: {end}")
 }
 ```
 
+### 示例3：日语流行语
+
+```json
+"推し活": {
+  "headword": "推し活",
+  "language": {
+    "en": "Japanese",
+    "zh": "日语"
+  },
+  "partOfSpeech": {
+    "en": "noun",
+    "zh": "名词"
+  },
+  "pronunciation": {
+    "romaji": "oshikatsu",
+    "hiragana": "おしかつ"
+  },
+  "firstRecorded": {
+    "en": "2021, Japanese social media",
+    "zh": "2021年，日本社交媒体"
+  },
+  "trendingPeriod": "2023-2024",
+  "numberOfSenses": 1,
+  "senses": [
+    {
+      "type": "trending",
+      "title": {
+        "en": "Trending Sense",
+        "zh": "流行义"
+      },
+      "label": {
+        "en": "Fan Activities for Favorite Idol",
+        "zh": "为喜爱偶像进行的追星活动"
+      },
+      "definition": {
+        "en": "Activities centered around supporting and expressing love for one's favorite idol, character, or celebrity, including attending events, buying merchandise, and creating fan content.",
+        "zh": "以支持和表达对喜爱偶像、角色或名人的爱为核心的活动，包括参加活动、购买周边和创作粉丝内容。"
+      },
+      "examples": [
+        {
+          "year": 2023,
+          "sentence": {
+            "en": "Her oshikatsu includes collecting all the concert merchandise.",
+            "zh": "她的推し活包括收集所有演唱会周边。"
+          },
+          "source": {
+            "author": "Japanese Fan Community",
+            "title": "Twitter Post",
+            "url": ""
+          },
+          "keyword": "oshikatsu",
+          "keywordPosition": {
+            "start": 4,
+            "end": 12
+          }
+        }
+      ],
+      "etymology": {
+        "en": "Combination of 推し (oshi, 'favorite/to push') and 活 (katsu, 'activity').",
+        "zh": "由「推し」（最爱）和「活」（活动）组合而成。"
+      }
+    }
+  ],
+  "frequencyData": [
+    {"year": 2021, "count": 8000},
+    {"year": 2022, "count": 25000},
+    {"year": 2023, "count": 80000},
+    {"year": 2024, "count": 120000}
+  ],
+  "history": {
+    "en": "Emerged from Japanese idol fan culture and spread globally through anime and K-pop fandoms.",
+    "zh": "源于日本偶像粉丝文化，通过动漫和K-pop粉丝圈传播至全球。"
+  },
+  "source": {
+    "en": "Japanese Buzzword Award 2023",
+    "zh": "《2023年日本流行语大赏》"
+  },
+  "relatedTerms": ["偶像", "粉丝", "周边", "応援"]
+}
+```
+
+### 示例4：德语流行语
+
+```json
+"Ampel-aus": {
+  "headword": "Ampel-aus",
+  "language": {
+    "en": "German",
+    "zh": "德语"
+  },
+  "partOfSpeech": {
+    "en": "noun",
+    "zh": "名词"
+  },
+  "pronunciation": {
+    "ipa": "/ˈampəl ˈaʊs/"
+  },
+  "firstRecorded": {
+    "en": "2024, German political discourse",
+    "zh": "2024年，德国政治讨论"
+  },
+  "trendingPeriod": "2024",
+  "numberOfSenses": 1,
+  "senses": [
+    {
+      "type": "trending",
+      "title": {
+        "en": "Trending Sense",
+        "zh": "流行义"
+      },
+      "label": {
+        "en": "End of Traffic Light Coalition",
+        "zh": "红绿灯联盟解散"
+      },
+      "definition": {
+        "en": "The collapse or end of Germany's 'traffic light' coalition government (SPD-Greens-FDP), named after the parties' colors: red, green, and yellow.",
+        "zh": "指德国「红绿灯」联合政府（社民党-绿党-自民党）的解散或终结，名称来自各党派代表色：红、绿、黄。"
+      },
+      "examples": [
+        {
+          "year": 2024,
+          "sentence": {
+            "en": "The Ampel-aus marks a significant shift in German politics.",
+            "zh": "红绿灯联盟的解散标志着德国政治的重大转变。"
+          },
+          "source": {
+            "author": "Der Spiegel",
+            "title": "Political Analysis",
+            "url": ""
+          },
+          "keyword": "Ampel-aus",
+          "keywordPosition": {
+            "start": 4,
+            "end": 13
+          }
+        }
+      ],
+      "etymology": {
+        "en": "Compound of 'Ampel' (traffic light) and 'aus' (off/out).",
+        "zh": "由「Ampel」（红绿灯）和「aus」（关闭/结束）组合而成。"
+      }
+    }
+  ],
+  "frequencyData": [
+    {"year": 2024, "count": 50000}
+  ],
+  "history": {
+    "en": "Emerged as the dominant political term in Germany following the coalition breakdown in late 2024.",
+    "zh": "随着2024年末联盟破裂，成为德国主流政治术语。"
+  },
+  "source": {
+    "en": "German Word of the Year 2024",
+    "zh": "《2024年德国年度词汇》"
+  },
+  "relatedTerms": ["Koalition", "Regierung", "Politik", "联盟"]
+}
+```
+
 ---
 
 ## 常见问题
@@ -580,18 +788,37 @@ print(f"start: {start}, end: {end}")
 ### Q5: keywordPosition 计算错误会怎样？
 **A**: 关键词高亮位置会错误，但不影响整体功能。建议使用Python脚本计算。
 
+### Q6: 如何在词条中添加插图？
+**A**: 插图需要在**历史文档（Markdown）**中添加，不是在 JSON 中：
+1. 将图片放入 `assets/images/` 文件夹
+2. 创建 `assets/history/词条_en.md` 和 `词条_zh.md`
+3. 在 Markdown 中使用：`![图片描述](../images/图片名.png)`
+4. 图片下方紧跟斜体文字会自动显示为说明
+
+### Q7: 主页简释（main.js）必须填吗？
+**A**: 不是必须的。如果不填写，词条不会出现在主页3D地球上，但仍可以通过直接访问 URL（`word.html?term=词条id`）查看。
+
 ## 检查清单
 
 在提交数据前，请检查：
 
-- [ ] 词条ID使用小写字母
+**数据文件 (buzzwords.json)**
+- [ ] 词条ID使用小写字母（中文词条可用中文作为ID）
 - [ ] 所有必需字段都已填写
 - [ ] 多语言字段包含 `en` 和 `zh` 两个键
 - [ ] 例句的 `keywordPosition` 计算正确
-- [ ] `frequencyData` 至少包含3个年份
+- [ ] `frequencyData` 至少包含3个年份（新词可以只有1年）
 - [ ] `numberOfSenses` 数量正确
 - [ ] JSON 格式正确（无语法错误）
-- [ ] 已更新 `js/main.js` 中的搜索列表
+
+**可选：主页搜索列表 (js/main.js)**
+- [ ] 如需在主页3D地球显示：在 `slangData` 数组中添加词条
+- [ ] 使用正确的 `origin` 语言标识（见第三步的对照表）
+
+**可选：资源文件**
+- [ ] 如需发音：添加音频到 `assets/audio/` 文件夹
+- [ ] 如需详细历史或插图：创建 `assets/history/词条_en.md` 和 `词条_zh.md`
+- [ ] 如需插图：添加图片到 `assets/images/`，在历史文档中用 `![描述](../images/图片.png)` 引用
 
 ---
 
@@ -608,3 +835,70 @@ with open('buzzwords.json', 'r', encoding='utf-8') as f:
     print("✅ JSON格式正确！")
     print(f"共有 {len(data['buzzwords'])} 个词条")
 ```
+
+---
+
+## 本地测试
+
+添加词条后，建议进行本地测试：
+
+### 方法1：使用 VS Code Live Server
+1. 安装 VS Code 插件 "Live Server"
+2. 右键点击 `index.html` → "Open with Live Server"
+3. 在搜索框输入新词条ID进行测试
+
+### 方法2：使用 Python 简易服务器
+```bash
+cd /path/to/dictionary
+python -m http.server 8000
+```
+然后访问 `http://localhost:8000`
+
+### 测试检查点
+- [ ] 主页搜索可以找到新词条
+- [ ] 点击后能正确跳转到词条页
+- [ ] 流行语档案表格显示完整
+- [ ] 定义标签页义项显示正确
+- [ ] 词频图表正常渲染（如有数据）
+- [ ] 语言切换（EN/中文）正常工作
+
+---
+
+## 项目文件结构参考
+
+```
+dictionary/
+├── index.html              # 主页（3D地球 + 搜索）
+├── word.html               # 词条详情页
+├── buzzwords.json          # ⭐ 核心数据文件
+│
+├── js/
+│   ├── main.js             # ⭐ 主页逻辑（含 slangData 搜索列表）
+│   ├── word.js             # 词条页渲染逻辑
+│   ├── charts.js           # 词频图表
+│   └── semantic-network.js # 语义网络可视化
+│
+├── css/
+│   └── style.css           # 样式文件
+│
+└── assets/
+    ├── audio/              # 发音音频（可选）
+    │   ├── brat-us.mp3
+    │   └── brat_uk.mp3
+    ├── history/            # 演化历史文档（可选）
+    │   ├── brat_en.md
+    │   └── brat_zh.md
+    └── images/             # 图片资源（可选）
+        └── brat_cover.png
+```
+
+---
+
+## 联系与协作
+
+如果在录入过程中遇到问题，请：
+1. 仔细检查 JSON 格式是否正确
+2. 参考现有的 "brat" 词条作为模板
+3. 联系项目负责人获取帮助
+
+**提交方式**：通过 Git 提交 Pull Request，或直接将修改后的文件发送给项目负责人。

@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>流行语数据录入工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #e0e0e0;
+        }
+
+        .header {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(90deg, #00d4ff, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header .status {
+            font-size: 0.9rem;
+            color: #888;
+        }
+
+        .container {
+            display: flex;
+            height: calc(100vh - 60px);
+        }
+
+        /* 左侧示例区 */
+        .example-panel {
+            width: 40%;
+            background: rgba(0, 0, 0, 0.2);
+            border-right: 1px solid rgba(0, 212, 255, 0.2);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-header {
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h2 {
+            font-size: 1rem;
+            color: #00d4ff;
+        }
+
+        .word-selector {
+            padding: 0.5rem 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 4px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .example-content {
+            flex: 1;
+            overflow: auto;
+            padding: 1rem;
+        }
+
+        .example-content pre {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            color: #a8d8a8;
+            font-family: 'Fira Code', 'Monaco', monospace;
+        }
+
+        /* 右侧录入区 */
+        .entry-panel {
+            width: 60%;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-section h3 {
+            font-size: 1rem;
+            color: #a855f7;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            flex: 1;
+        }
+
+        .form-group.full {
+            flex: 100%;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group label .required {
+            color: #f87171;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #666;
+        }
+
+        /* 发音区域动态显示 */
+        .pronunciation-fields {
+            display: none;
+        }
+
+        .pronunciation-fields.active {
+            display: flex;
+        }
+
+        /* 词频数据 */
+        .frequency-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .frequency-item {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .frequency-item input {
+            width: 100px;
+        }
+
+        .frequency-item button {
+            padding: 0.4rem 0.8rem;
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid #ef4444;
+            border-radius: 4px;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .add-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid #22c55e;
+            border-radius: 4px;
+            color: #22c55e;
+            cursor: pointer;
+            font-size: 0.85rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 按钮区 */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding: 1rem 0;
+            position: sticky;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(15, 52, 96, 0.95), transparent);
+            padding-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.8rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-preview {
+            background: rgba(168, 85, 247, 0.2);
+            border: 1px solid #a855f7;
+            color: #a855f7;
+        }
+
+        .btn-preview:hover {
+            background: rgba(168, 85, 247, 0.3);
+        }
+
+        .btn-submit {
+            background: linear-gradient(90deg, #00d4ff, #a855f7);
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .btn-reset {
+            background: rgba(107, 114, 128, 0.2);
+            border: 1px solid #6b7280;
+            color: #9ca3af;
+        }
+
+        /* 弹窗 */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 800px;
+            max-height: 80vh;
+            overflow: auto;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .modal-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: #00d4ff;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .modal-body pre {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            line-height: 1.5;
+            overflow-x: auto;
+            color: #a8d8a8;
+        }
+
+        /* 提示信息 */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            z-index: 1001;
+            animation: slideIn 0.3s ease;
+        }
+
+        .toast.success {
+            background: rgba(34, 197, 94, 0.9);
+            color: #fff;
+        }
+
+        .toast.error {
+            background: rgba(239, 68, 68, 0.9);
+            color: #fff;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* 帮助提示 */
+        .help-text {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.3rem;
+        }
+
+        /* JSON 字段名标签 */
+        .json-key {
+            font-family: 'Fira Code', 'Monaco', monospace;
+            font-size: 0.7rem;
+            color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            margin-left: 0.3rem;
+        }
+
+        /* 历史文档提示 */
+        .history-note {
+            margin-top: 1rem;
+            padding: 0.8rem 1rem;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px dashed rgba(168, 85, 247, 0.3);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            color: #aaa;
+            line-height: 1.6;
+        }
+
+        .history-note code {
+            font-family: 'Fira Code', 'Monaco', monospace;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0.1rem 0.4rem;
+            border-radius: 3px;
+            color: #00d4ff;
+        }
+
+        /* 快速填充 */
+        .quick-fill {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .quick-fill button {
+            padding: 0.3rem 0.8rem;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            border-radius: 20px;
+            color: #00d4ff;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quick-fill button:hover {
+            background: rgba(0, 212, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>流行语数据录入工具</h1>
+        <span class="status">已有词条：<span id="wordCount">{{ existing_words|length }}</span> 个</span>
+    </header>
+
+    <div class="container">
+        <!-- 左侧示例区 -->
+        <div class="example-panel">
+            <div class="panel-header">
+                <h2>示例参考</h2>
+                <select class="word-selector" id="exampleSelector">
+                    {% for word in existing_words %}
+                    <option value="{{ word }}">{{ word }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="example-content">
+                <pre id="exampleJson">{{ example_json }}</pre>
+            </div>
+        </div>
+
+        <!-- 右侧录入区 -->
+        <div class="entry-panel">
+            <form id="entryForm">
+                <!-- 基本信息 -->
+                <div class="form-section">
+                    <h3>基本信息</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>词条ID <span class="json-key">"key"</span> <span class="required">*</span></label>
+                            <input type="text" name="entryId" placeholder="小写字母，如 brat、躺平" required>
+                            <div class="help-text">JSON对象的键名，用于URL</div>
+                        </div>
+                        <div class="form-group">
+                            <label>词目 <span class="json-key">headword</span> <span class="required">*</span></label>
+                            <input type="text" name="headword" placeholder="词条显示标题" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>来源语言 <span class="json-key">language</span> <span class="required">*</span></label>
+                            <input type="text" name="language" id="languageSelect" list="languageList" placeholder="输入或选择语言" required>
+                            <datalist id="languageList">
+                                <option value="Chinese">中文</option>
+                                <option value="English">英语</option>
+                                <option value="Japanese">日语</option>
+                                <option value="Korean">韩语</option>
+                                <option value="French">法语</option>
+                                <option value="German">德语</option>
+                                <option value="Spanish">西班牙语</option>
+                                <option value="Russian">俄语</option>
+                                <option value="Arabic">阿拉伯语</option>
+                                <option value="Portuguese">葡萄牙语</option>
+                                <option value="Italian">意大利语</option>
+                                <option value="Dutch">荷兰语</option>
+                                <option value="Thai">泰语</option>
+                                <option value="Vietnamese">越南语</option>
+                                <option value="Hindi">印地语</option>
+                            </datalist>
+                        </div>
+                        <div class="form-group">
+                            <label>词性 <span class="json-key">partOfSpeech</span> <span class="required">*</span></label>
+                            <input type="text" name="partOfSpeech" list="posList" placeholder="输入或选择词性" required>
+                            <datalist id="posList">
+                                <option value="noun">名词</option>
+                                <option value="verb">动词</option>
+                                <option value="adjective">形容词</option>
+                                <option value="adverb">副词</option>
+                                <option value="phrase">短语</option>
+                                <option value="abbreviation">缩写</option>
+                                <option value="interjection">感叹词</option>
+                                <option value="pronoun">代词</option>
+                                <option value="preposition">介词</option>
+                                <option value="conjunction">连词</option>
+                            </datalist>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>主页简释 <span class="json-key">→ main.js</span></label>
+                            <input type="text" name="shortMeaning" placeholder="简短中文释义，用于主页显示">
+                            <div class="help-text">可选，写入 main.js 的 slangData.meaning</div>
+                        </div>
+                        <div class="form-group">
+                            <label>流行时间 <span class="json-key">trendingPeriod</span> <span class="required">*</span></label>
+                            <input type="text" name="trendingPeriod" placeholder="如 2024 或 2023-2024" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 发音信息 -->
+                <div class="form-section">
+                    <h3>发音信息 <span class="json-key">pronunciation</span></h3>
+                    <div class="help-text" style="margin-bottom: 0.5rem;">根据上方选择的语言显示对应字段</div>
+
+                    <!-- 英语发音 -->
+                    <div class="pronunciation-fields" id="pron-English">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>英式发音 <span class="json-key">.uk</span></label>
+                                <input type="text" name="pronUK" placeholder="/bræt/">
+                            </div>
+                            <div class="form-group">
+                                <label>美式发音 <span class="json-key">.us</span></label>
+                                <input type="text" name="pronUS" placeholder="/bræt/">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 中文发音 -->
+                    <div class="pronunciation-fields" id="pron-Chinese">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>拼音 <span class="json-key">.pinyin</span></label>
+                                <input type="text" name="pronPinyin" placeholder="tǎng píng">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 日语发音 -->
+                    <div class="pronunciation-fields" id="pron-Japanese">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>罗马字 <span class="json-key">.romaji</span></label>
+                                <input type="text" name="pronRomaji" placeholder="oshikatsu">
+                            </div>
+                            <div class="form-group">
+                                <label>平假名 <span class="json-key">.hiragana</span></label>
+                                <input type="text" name="pronHiragana" placeholder="おしかつ">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 韩语发音 -->
+                    <div class="pronunciation-fields" id="pron-Korean">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>罗马化 <span class="json-key">.romanization</span></label>
+                                <input type="text" name="pronRomanization" placeholder="hallyu">
+                            </div>
+                            <div class="form-group">
+                                <label>韩文 <span class="json-key">.hangul</span></label>
+                                <input type="text" name="pronHangul" placeholder="한류">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 其他语言发音 -->
+                    <div class="pronunciation-fields" id="pron-Other">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>国际音标 <span class="json-key">.ipa</span></label>
+                                <input type="text" name="pronIPA" placeholder="/ˈampəl ˈaʊs/">
+                            </div>
+                            <div class="form-group">
+                                <label>罗马化 <span class="json-key">.romanization</span></label>
+                                <input type="text" name="pronRomanization" placeholder="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 定义与义项 -->
+                <div class="form-section">
+                    <h3>流行义定义 <span class="json-key">senses[0]</span></h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>义项标签 (EN) <span class="json-key">.label.en</span> <span class="required">*</span></label>
+                            <input type="text" name="senseLabelEn" placeholder="如 Confident, Independent Person" required>
+                        </div>
+                        <div class="form-group">
+                            <label>义项标签 (ZH) <span class="json-key">.label.zh</span> <span class="required">*</span></label>
+                            <input type="text" name="senseLabelZh" placeholder="如 自信独立者" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>定义 (EN) <span class="json-key">.definition.en</span> <span class="required">*</span></label>
+                            <textarea name="definitionEn" placeholder="完整的英文定义..." required></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>定义 (ZH) <span class="json-key">.definition.zh</span> <span class="required">*</span></label>
+                            <textarea name="definitionZh" placeholder="完整的中文定义..." required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 例句 -->
+                <div class="form-section">
+                    <h3>例句 <span class="json-key">senses[0].examples[0]</span></h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>年份 <span class="json-key">.year</span></label>
+                            <input type="number" name="exampleYear" value="2024" min="1900" max="2030">
+                        </div>
+                        <div class="form-group">
+                            <label>关键词 <span class="json-key">.keyword</span></label>
+                            <input type="text" name="exampleKeyword" placeholder="自动使用 headword">
+                            <div class="help-text">用于计算 keywordPosition</div>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>例句 (EN) <span class="json-key">.sentence.en</span></label>
+                            <textarea name="exampleEn" placeholder="英文例句..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>例句 (ZH) <span class="json-key">.sentence.zh</span></label>
+                            <textarea name="exampleZh" placeholder="中文翻译..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>来源作者 <span class="json-key">.source.author</span></label>
+                            <input type="text" name="exampleAuthor" placeholder="作者名">
+                        </div>
+                        <div class="form-group">
+                            <label>来源标题 <span class="json-key">.source.title</span></label>
+                            <input type="text" name="exampleTitle" placeholder="文章/视频标题">
+                        </div>
+                        <div class="form-group">
+                            <label>来源链接 <span class="json-key">.source.url</span></label>
+                            <input type="url" name="exampleUrl" placeholder="https://...">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 词源 -->
+                <div class="form-section">
+                    <h3>词源 <span class="json-key">senses[0].etymology</span> <span style="color:#666;font-size:0.8rem;">(可选)</span></h3>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>词源说明 (EN) <span class="json-key">.en</span></label>
+                            <textarea name="etymologyEn" placeholder="词源和来历的英文说明..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>词源说明 (ZH) <span class="json-key">.zh</span></label>
+                            <textarea name="etymologyZh" placeholder="词源和来历的中文说明..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 词频数据 -->
+                <div class="form-section">
+                    <h3>词频数据 <span class="json-key">frequencyData[]</span></h3>
+                    <div class="frequency-list" id="frequencyList">
+                        <div class="frequency-item">
+                            <input type="number" name="freqYear" placeholder="year" value="2024">
+                            <input type="number" name="freqCount" placeholder="count" value="10000">
+                            <button type="button" onclick="removeFrequency(this)">删除</button>
+                        </div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addFrequency()">+ 添加年份</button>
+                    <div class="help-text">每项对应 {"year": 2024, "count": 10000}</div>
+                </div>
+
+                <!-- 历史信息 -->
+                <div class="form-section">
+                    <h3>演化历史 <span class="json-key">history</span></h3>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>历史说明 (EN) <span class="json-key">.en</span></label>
+                            <textarea name="historyEn" placeholder="词汇的历史演变..."></textarea>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>历史说明 (ZH) <span class="json-key">.zh</span></label>
+                            <textarea name="historyZh" placeholder="词汇的历史演变..."></textarea>
+                        </div>
+                    </div>
+                    <div class="history-note">
+                        <strong>需要详细历史或插图？</strong> 请手动创建 Markdown 文件：
+                        <code>assets/history/词条id_en.md</code> 和 <code>词条id_zh.md</code>
+                        <br>插图引用格式：<code>![描述](../images/图片名.png)</code>
+                    </div>
+                </div>
+
+                <!-- 来源与相关 -->
+                <div class="form-section">
+                    <h3>其他信息</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>首次记录 (EN) <span class="json-key">firstRecorded.en</span></label>
+                            <input type="text" name="firstRecordedEn" placeholder="如 2021, TikTok">
+                        </div>
+                        <div class="form-group">
+                            <label>首次记录 (ZH) <span class="json-key">firstRecorded.zh</span></label>
+                            <input type="text" name="firstRecordedZh" placeholder="如 2021年，TikTok">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>资料来源 (EN) <span class="json-key">source.en</span></label>
+                            <input type="text" name="sourceEn" placeholder="如 Oxford Dictionary 2024">
+                        </div>
+                        <div class="form-group">
+                            <label>资料来源 (ZH) <span class="json-key">source.zh</span></label>
+                            <input type="text" name="sourceZh" placeholder="如《牛津词典2024》">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label>相关词汇 <span class="json-key">relatedTerms[]</span></label>
+                            <input type="text" name="relatedTerms" placeholder="用逗号分隔，如 aesthetic, confidence, rebellion">
+                            <div class="help-text">生成数组 ["aesthetic", "confidence", "rebellion"]</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 按钮 -->
+                <div class="button-group">
+                    <button type="button" class="btn btn-reset" onclick="resetForm()">重置</button>
+                    <button type="button" class="btn btn-preview" onclick="previewJSON()">预览 JSON</button>
+                    <button type="submit" class="btn btn-submit">提交词条</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 预览弹窗 -->
+    <div class="modal" id="previewModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>JSON 预览</h3>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <pre id="previewJson"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 语言切换显示对应发音字段
+        document.getElementById('languageSelect').addEventListener('input', function() {
+            const lang = this.value;
+
+            // 隐藏所有发音字段
+            document.querySelectorAll('.pronunciation-fields').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // 显示对应的发音字段
+            if (lang === 'English') {
+                document.getElementById('pron-English').classList.add('active');
+            } else if (lang === 'Chinese') {
+                document.getElementById('pron-Chinese').classList.add('active');
+            } else if (lang === 'Japanese') {
+                document.getElementById('pron-Japanese').classList.add('active');
+            } else if (lang === 'Korean') {
+                document.getElementById('pron-Korean').classList.add('active');
+            } else if (lang) {
+                document.getElementById('pron-Other').classList.add('active');
+            }
+        });
+
+        // 添加词频年份
+        function addFrequency() {
+            const list = document.getElementById('frequencyList');
+            const item = document.createElement('div');
+            item.className = 'frequency-item';
+            item.innerHTML = `
+                <input type="number" name="freqYear" placeholder="年份">
+                <input type="number" name="freqCount" placeholder="频次">
+                <button type="button" onclick="removeFrequency(this)">删除</button>
+            `;
+            list.appendChild(item);
+        }
+
+        // 删除词频年份
+        function removeFrequency(btn) {
+            btn.parentElement.remove();
+        }
+
+        // 收集表单数据
+        function collectFormData() {
+            const form = document.getElementById('entryForm');
+            const formData = new FormData(form);
+            const data = {};
+
+            // 基本字段
+            for (let [key, value] of formData.entries()) {
+                if (!key.startsWith('freq')) {
+                    data[key] = value;
+                }
+            }
+
+            // 收集词频数据
+            const freqYears = form.querySelectorAll('input[name="freqYear"]');
+            const freqCounts = form.querySelectorAll('input[name="freqCount"]');
+            data.frequencyData = [];
+
+            freqYears.forEach((yearInput, i) => {
+                if (yearInput.value && freqCounts[i].value) {
+                    data.frequencyData.push({
+                        year: yearInput.value,
+                        count: freqCounts[i].value
+                    });
+                }
+            });
+
+            return data;
+        }
+
+        // 预览 JSON
+        async function previewJSON() {
+            const data = collectFormData();
+
+            try {
+                const response = await fetch('/api/preview', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('previewJson').textContent = result.json;
+                    document.getElementById('previewModal').classList.add('active');
+                } else {
+                    showToast(result.error, 'error');
+                }
+            } catch (error) {
+                showToast('预览失败: ' + error.message, 'error');
+            }
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            document.getElementById('previewModal').classList.remove('active');
+        }
+
+        // 提交表单
+        document.getElementById('entryForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const data = collectFormData();
+
+            try {
+                const response = await fetch('/api/submit', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast(result.message, 'success');
+                    // 更新词条计数
+                    const countEl = document.getElementById('wordCount');
+                    countEl.textContent = parseInt(countEl.textContent) + 1;
+                    // 重置表单
+                    resetForm();
+                } else {
+                    showToast(result.error, 'error');
+                }
+            } catch (error) {
+                showToast('提交失败: ' + error.message, 'error');
+            }
+        });
+
+        // 重置表单
+        function resetForm() {
+            document.getElementById('entryForm').reset();
+            document.querySelectorAll('.pronunciation-fields').forEach(el => {
+                el.classList.remove('active');
+            });
+        }
+
+        // 显示提示
+        function showToast(message, type) {
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        // 切换示例
+        document.getElementById('exampleSelector').addEventListener('change', async function() {
+            const wordId = this.value;
+            try {
+                const response = await fetch(`/api/word/${wordId}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    const json = {};
+                    json[wordId] = result.data;
+                    document.getElementById('exampleJson').textContent =
+                        JSON.stringify(json, null, 2);
+                }
+            } catch (error) {
+                console.error('加载示例失败:', error);
+            }
+        });
+
+        // 点击弹窗外部关闭
+        document.getElementById('previewModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // 页面加载时触发语言选择，显示默认语言的发音字段
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('languageSelect').dispatchEvent(new Event('change'));
+        });
+    </script>
+</body>
+</html>
